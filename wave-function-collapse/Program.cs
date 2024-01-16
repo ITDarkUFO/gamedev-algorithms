@@ -1,3 +1,3 @@
 ﻿
-using var game = new wave_function_collapse.Game1();
+using var game = new App.Game1();
 game.Run();
