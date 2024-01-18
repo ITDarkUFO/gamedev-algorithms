@@ -11,7 +11,7 @@ namespace App
         private readonly GameManager _gameManager;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Screen _screen;
+        private Grid _screen;
 
         public Game1()
         {

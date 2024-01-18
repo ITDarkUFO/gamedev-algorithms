@@ -9,6 +9,7 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <RootNamespace>App</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Icon.ico" />

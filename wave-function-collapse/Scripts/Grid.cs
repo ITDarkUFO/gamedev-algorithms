@@ -11,19 +11,33 @@ using System.Threading.Tasks;
 
 namespace App.Scripts
 {
-    internal class Screen
+    internal class Grid
     {
+        #region Constants
+
+        public int GRID_SIZE = 20;
+        public const string GENERATOR_TYPE = "Maze";
+
+        #endregion
+
+        #region Fields
+
         private readonly Random _random;
         private readonly GameManager _gameManager;
-
         private SpriteBatch _spriteBatch;
         private ContentManager _content;
 
         private List<Texture2D> _textures = new();
+        private List<Cell> _cells = new();
+        private TileCollection _tiles;
 
-        public const string GENERATOR_TYPE = "Maze";
+        #endregion
 
-        public Screen()
+        #region Properties
+
+        #endregion
+
+        public Grid()
         {
             _random = new();
             _gameManager = GameManager.GetInstance();
@@ -31,9 +45,14 @@ namespace App.Scripts
 
         public void Initialize()
         {
-
+            for (int i = 0; i < GRID_SIZE; i++)
+            {
+                for (int j = 0; j < GRID_SIZE; j++)
+                {
+                    Cell newCell = new(new Point(i, j));
+                }
+            }
         }
-
 
         public void LoadContent()
         {
@@ -46,20 +65,30 @@ namespace App.Scripts
             {
                 _textures.Add(_content.Load<Texture2D>($"{GENERATOR_TYPE}/{_fileName}"));
             }
+
+            _tiles = new(_textures);
         }
 
         public void Update(GameTime gameTime)
         {
-            
+
         }
 
         public void Draw(GameTime gameTime)
         {
-            var texture = _textures[_random.Next(_textures.Count)];
+            int textureSize = 50;
 
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            _spriteBatch.Draw(texture, new Rectangle(Point.Zero, new Point(100)), Color.White);
-            _spriteBatch.End();
+            for (var i = 0; i < GRID_SIZE; i++)
+            {
+                for (var j = 0; j < GRID_SIZE; j++)
+                {
+                    var texture = _textures[_random.Next(_textures.Count)];
+
+                    _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                    _spriteBatch.Draw(texture, new Rectangle(new Point(i * textureSize, j * textureSize), new Point(textureSize)), Color.White);
+                    _spriteBatch.End();
+                }
+            }
         }
     }
 }
