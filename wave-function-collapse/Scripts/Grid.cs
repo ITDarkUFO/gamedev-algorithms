@@ -6,89 +6,170 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Scripts
 {
-    internal class Grid
-    {
-        #region Constants
+	internal class Grid
+	{
+		#region Constants
 
-        public int GRID_SIZE = 20;
-        public const string GENERATOR_TYPE = "Maze";
+		public const int GRID_SIZE = 30;
+		public const int TEXTURE_SIZE = 30;
+		public const int OFFSET = 20;
+		public const string GENERATOR_TYPE = "Maze";
 
-        #endregion
+		#endregion
 
-        #region Fields
+		#region Fields
 
-        private readonly Random _random;
-        private readonly GameManager _gameManager;
-        private SpriteBatch _spriteBatch;
-        private ContentManager _content;
+		private readonly Random _random;
+		private readonly GameManager _gameManager;
+		private SpriteBatch _spriteBatch;
+		private ContentManager _content;
+		private GraphicsDeviceManager _graphics;
 
-        private List<Texture2D> _textures = new();
-        private List<Cell> _cells = new();
-        private TileCollection _tiles;
+		private List<Texture2D> _textures = new();
+		private List<Cell> _cells = new();
+		private TileCollection _tiles;
 
-        #endregion
+		private bool _isInitialized = false;
+		private int _collapsedCells = 0;
 
-        #region Properties
+		#endregion
 
-        #endregion
+		#region Properties
 
-        public Grid()
-        {
-            _random = new();
-            _gameManager = GameManager.GetInstance();
-        }
+		#endregion
 
-        public void Initialize()
-        {
-            for (int i = 0; i < GRID_SIZE; i++)
-            {
-                for (int j = 0; j < GRID_SIZE; j++)
-                {
-                    Cell newCell = new(new Point(i, j));
-                }
-            }
-        }
+		public Grid()
+		{
+			_random = new();
+			_gameManager = GameManager.GetInstance();
+		}
 
-        public void LoadContent()
-        {
-            _content = _gameManager.GetService<ContentManager>();
-            _spriteBatch = _gameManager.GetService<SpriteBatch>();
+		public void Initialize()
+		{
+			for (int i = 0; i < GRID_SIZE; i++)
+			{
+				for (int j = 0; j < GRID_SIZE; j++)
+				{
+					_cells.Add(new(new Point(j, i)));
+				}
+			}
+		}
 
-            foreach (var _fileName in Directory
-                .EnumerateFiles(Path.Combine(_content.RootDirectory, GENERATOR_TYPE))
-                .Select(Path.GetFileNameWithoutExtension))
-            {
-                _textures.Add(_content.Load<Texture2D>($"{GENERATOR_TYPE}/{_fileName}"));
-            }
+		public void LoadContent()
+		{
+			_content = _gameManager.GetService<ContentManager>();
+			_spriteBatch = _gameManager.GetService<SpriteBatch>();
+			_graphics = _gameManager.GetService<GraphicsDeviceManager>();
 
-            _tiles = new(_textures);
-        }
+			foreach (var _fileName in Directory
+				.EnumerateFiles(Path.Combine(_content.RootDirectory, GENERATOR_TYPE))
+				.Select(Path.GetFileNameWithoutExtension))
+			{
+				_textures.Add(_content.Load<Texture2D>($"{GENERATOR_TYPE}/{_fileName}"));
+			}
 
-        public void Update(GameTime gameTime)
-        {
+			_tiles = new(_textures);
 
-        }
+			foreach (var cell in _cells)
+			{
+				cell.CreateCell(false, _tiles.tiles);
+			}
 
-        public void Draw(GameTime gameTime)
-        {
-            int textureSize = 50;
+			_graphics.PreferredBackBufferWidth = (TEXTURE_SIZE * GRID_SIZE) + (OFFSET * 2);
+			_graphics.PreferredBackBufferHeight = (TEXTURE_SIZE * GRID_SIZE) + (OFFSET * 2);
+			_graphics.ApplyChanges();
+		}
 
-            for (var i = 0; i < GRID_SIZE; i++)
-            {
-                for (var j = 0; j < GRID_SIZE; j++)
-                {
-                    var texture = _textures[_random.Next(_textures.Count)];
+		public void Update(GameTime gameTime)
+		{
+			Cell cell;
 
-                    _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-                    _spriteBatch.Draw(texture, new Rectangle(new Point(i * textureSize, j * textureSize), new Point(textureSize)), Color.White);
-                    _spriteBatch.End();
-                }
-            }
-        }
-    }
+			if (_collapsedCells != _cells.Count)
+			{
+				if (!_isInitialized)
+				{
+					cell = _cells[_random.Next(GRID_SIZE * GRID_SIZE)];
+
+					cell.Tile = cell.Options[_random.Next(cell.Options.Count)];
+					cell.Collapsed = true;
+
+					_isInitialized = true;
+				}
+				else
+				{
+
+					cell = _cells.Where(c => !c.Collapsed).OrderBy(c => c.Options.Count).First();
+					cell.Tile = cell.Options[_random.Next(cell.Options.Count)];
+					cell.Collapsed = true;
+
+				}
+
+				_collapsedCells += 1;
+
+
+				if (cell.Position.X > 0)
+				{
+					var position = (cell.Position.Y * GRID_SIZE) + cell.Position.X - 1;
+					var newCell = _cells[position];
+					var options = newCell.Options;
+					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).LeftNeighbours;
+					options.RemoveAll(o => !neighbours.Any(n => n.Texture == o.Texture));
+				}
+				if (cell.Position.Y > 0)
+				{
+					var position = ((cell.Position.Y - 1) * GRID_SIZE) + cell.Position.X;
+					var newCell = _cells[position];
+					var options = newCell.Options;
+					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).UpNeighbours;
+					options.RemoveAll(o => !neighbours.Any(n => n.Texture == o.Texture));
+				}
+				if (cell.Position.X < GRID_SIZE - 1)
+				{
+					var position = (cell.Position.Y * GRID_SIZE) + cell.Position.X + 1;
+					var newCell = _cells[position];
+					var options = newCell.Options;
+					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).RightNeighbours;
+					options.RemoveAll(o => !neighbours.Any(n => n.Texture == o.Texture));
+				}
+				if (cell.Position.Y < GRID_SIZE - 1)
+				{
+					var position = ((cell.Position.Y + 1) * GRID_SIZE) + cell.Position.X;
+					var newCell = _cells[position];
+					var options = newCell.Options;
+					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).DownNeighbours;
+					options.RemoveAll(o => !neighbours.Any(n => n.Texture == o.Texture));
+				}
+			}
+		}
+
+		public void Draw(GameTime gameTime)
+		{
+			Point offset = new(OFFSET);
+			for (var y = 0; y < GRID_SIZE; y++)
+			{
+				for (var x = 0; x < GRID_SIZE; x++)
+				{
+					if (_cells[y * GRID_SIZE + x].Tile == null)
+					{
+						_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+						_spriteBatch.Draw(_textures[0], new Rectangle(
+							new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset,
+							new Point(TEXTURE_SIZE)), Color.White);
+						_spriteBatch.End();
+					}
+					else
+					{
+						_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+						_spriteBatch.Draw(_cells[y * GRID_SIZE + x].Tile.Texture, new Rectangle(
+							new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset,
+							new Point(TEXTURE_SIZE)), Color.White);
+						_spriteBatch.End();
+					}
+				}
+			}
+		}
+	}
 }
