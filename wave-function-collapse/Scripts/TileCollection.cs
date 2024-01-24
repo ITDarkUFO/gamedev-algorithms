@@ -14,7 +14,7 @@ namespace App.Scripts
 			{
 				UpNeighbours = new()
 				{
-					new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
+					//new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/ABD")),
@@ -22,10 +22,11 @@ namespace App.Scripts
 					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/BD")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
 				},
 				RightNeighbours = new()
 				{
-					new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
+					//new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/ABC")),
@@ -33,10 +34,11 @@ namespace App.Scripts
 					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
 				},
 				DownNeighbours = new()
 				{
-					new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
+					//new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/BCD")),
@@ -44,10 +46,11 @@ namespace App.Scripts
 					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
 				},
 				LeftNeighbours = new()
 				{
-					new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
+					//new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/AC")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/ACD")),
@@ -55,6 +58,7 @@ namespace App.Scripts
 					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
 				}
 			};
 
@@ -232,6 +236,55 @@ namespace App.Scripts
 				RightNeighbours = emptyTile.RightNeighbours,
 				DownNeighbours = emptyTile.DownNeighbours,
 				LeftNeighbours = fullTile.LeftNeighbours
+			});
+
+			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/F"))
+			{
+				UpNeighbours = new()
+				{
+					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/ABD")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/AD")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/BD")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
+
+				},
+				RightNeighbours = new()
+				{
+					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/ABC")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/AC")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
+				},
+				DownNeighbours = new()
+				{
+					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/BCD")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/BD")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
+				},
+				LeftNeighbours = new()
+				{
+					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/AC")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/ACD")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/AD")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
+					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
+				}
 			});
 		}
 	}
