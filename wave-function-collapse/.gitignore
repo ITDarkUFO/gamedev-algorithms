@@ -490,3 +490,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+#Allow ZIP Presets
+!/Presets/*.zip
