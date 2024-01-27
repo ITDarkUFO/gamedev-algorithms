@@ -29,6 +29,9 @@ namespace App
 
             _screen.Initialize();
 
+			JsonTemp json = new("json-schema");
+            json.Generate();
+
             base.Initialize();
         }
 

@@ -1,0 +1,7 @@
+﻿{
+  "name": "Maze",
+  "freeDimensions": true,
+  "dimensions": [
+    [ 1, 1 ]
+  ]
+}

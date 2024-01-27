@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
@@ -20,6 +20,10 @@
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="JsonSchema.Net" Version="5.5.1" />
+    <PackageReference Include="JsonSchema.Net.CodeGeneration" Version="0.1.3" />
+    <PackageReference Include="JsonSchema.Net.DataGeneration" Version="1.2.0" />
+    <PackageReference Include="JsonSchema.Net.Generation" Version="3.5.1" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>
@@ -27,4 +31,8 @@
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
   </Target>
+  <ItemGroup>
+    <Content Include="Sources\*.json" TargetPath="JsonSchemas\%(Filename)%(Extension)" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties sources_4json-schema_1json__JsonSchema="https://json-schema.org/draft-07/schema" /></VisualStudio></ProjectExtensions>
 </Project>

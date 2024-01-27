@@ -1,0 +1,43 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Wave Function Collapse Tiles Generator JSON Scheme",
+  "type": "object",
+
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "This shows up in tooltips for the 'name' property."
+    },
+    "freeDimensions": {
+      "type": "boolean",
+      "description": ""
+    },
+    "dimensions": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "minItems": 1
+    }
+  },
+  "if": {
+    "properties": {
+      "freeDimensions": {
+        "const": true
+      }
+    }
+  },
+  "then": {
+    "required": [ "dimensions" ]
+  },
+  "else": {
+    "not": { "required": [ "dimensions" ] }
+  },
+  "additionalProperties": false
+}
