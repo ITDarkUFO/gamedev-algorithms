@@ -1,0 +1,63 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Wave Function Collapse Generator Settings JSON Schema",
+  "type": "object",
+
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of Tileset"
+    },
+    "versions": {
+      "type": "array",
+      "description": "An array of version numbers.",
+      "minItems": 1,
+      "items": {
+        "type": "number"
+      }
+    },
+    "settings": {
+      "type": "object",
+      "description": "TODO",
+      "properties": {
+        "isFixed": {
+          "type": "boolean",
+          "default": false,
+          "description": "Can generator create a grid of arbitrary width and height"
+        },
+        "dimensions": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "minItems": 1,
+          "examples": [
+            [ 100, 20 ],
+            [ 10, 50 ]
+          ]
+        }
+      },
+      "if": {
+        "properties": {
+          "isFixed": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [ "dimensions" ]
+      },
+      "else": {
+        "not": { "required": [ "dimensions" ] }
+      }
+    }
+  },
+  "required": [ "name", "version" ],
+  "additionalProperties": false
+}

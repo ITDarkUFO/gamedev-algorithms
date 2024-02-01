@@ -1,0 +1,42 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Wave Function Collapse Tiles Settings JSON Schema",
+  "type": "object",
+
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of Tileset"
+    },
+    "versions": {
+      "type": "array",
+      "description": "An array of version numbers.",
+      "minItems": 1,
+      "items": {
+        "type": "number"
+      }
+    },
+    "tiles": {
+      "type": "array",
+      "description": "TODO",
+      "items": {
+        "type": "object",
+        "description": "TODO",
+        "properties": {
+          "tile": {
+            "type": "string",
+            "description": "TODO"
+          },
+          "neighbors": {
+            "type": "array",
+            "description": "TODO",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [ "name", "version", "tiles" ]
+}
