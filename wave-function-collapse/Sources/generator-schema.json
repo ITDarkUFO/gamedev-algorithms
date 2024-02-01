@@ -8,13 +8,9 @@
       "type": "string",
       "description": "Name of Tileset"
     },
-    "versions": {
-      "type": "array",
-      "description": "An array of version numbers.",
-      "minItems": 1,
-      "items": {
-        "type": "number"
-      }
+    "version": {
+      "type": "string",
+      "description": "An string of version number."
     },
     "settings": {
       "type": "object",
@@ -23,8 +19,8 @@
         "isFixed": {
           "type": "boolean",
           "default": false,
-          "description": "Can generator create a grid of arbitrary width and height"
-        },
+          "description": "Can generator create a grid of arbitrary width and height."
+        },  
         "dimensions": {
           "type": "array",
           "items": {
