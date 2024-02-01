@@ -1,38 +1,62 @@
 ﻿{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Wave Function Collapse Tiles Settings JSON Schema",
-  "type": "object",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Wave Function Collapse Tiles Settings JSON Schema",
+    "type": "object",
 
-  "properties": {
-    "name": {
-      "type": "string",
-      "description": "Name of Tileset"
-    },
-    "version": {
-      "type": "string",
-      "description": "An string of version number."
-    },
-    "tiles": {
-      "type": "array",
-      "description": "TODO",
-      "items": {
-        "type": "object",
-        "description": "TODO",
-        "properties": {
-          "tile": {
+    "properties": {
+        "name": {
             "type": "string",
-            "description": "TODO"
-          },
-          "neighbors": {
+            "description": "Name of Tileset"
+        },
+        "version": {
+            "type": "string",
+            "description": "An string of version number."
+        },
+        "tiles": {
             "type": "array",
             "description": "TODO",
             "items": {
-              "type": "string"
+                "type": "object",
+                "description": "TODO",
+                "properties": {
+                    "tile": {
+                        "type": "string",
+                        "description": "TODO"
+                    },
+                    "neighbors": {
+                        "type": "object",
+                        "description": "TODO",
+                        "properties": {
+                            "up": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "right": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "down": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "left": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": [ "tile" ]
             }
-          }
         }
-      }
-    }
-  },
-  "required": [ "name", "version", "tiles" ]
+    },
+    "required": [ "name", "version", "tiles" ]
 }
