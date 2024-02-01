@@ -14,6 +14,7 @@
   <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
+    <None Remove="Sources\tiles-schema.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -32,7 +33,10 @@
     <Exec Command="dotnet tool restore" />
   </Target>
   <ItemGroup>
-    <Content Include="Sources\*.json" TargetPath="JsonSchemas\%(Filename)%(Extension)" CopyToOutputDirectory="Always" />
+    <Content Include="Sources\*.json" TargetPath="JsonSchemas\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
-  <ProjectExtensions><VisualStudio><UserProperties sources_4json-schema_1json__JsonSchema="https://json-schema.org/draft-07/schema" /></VisualStudio></ProjectExtensions>
+  <ItemGroup>
+    <Content Include="Sources\*.zip" TargetPath="TileSets\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties sources_4lines_4generator-info_1json__JsonSchema="http://raw.githubusercontent.com/ITDarkUFO/gamedev-algorithms/main/wave-function-collapse/Sources/generator-schema.json" /></VisualStudio></ProjectExtensions>
 </Project>

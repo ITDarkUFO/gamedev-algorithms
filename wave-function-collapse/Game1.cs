@@ -6,66 +6,66 @@ using App.Engine;
 
 namespace App
 {
-    public class Game1 : Game
-    {
-        private readonly GameManager _gameManager;
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private Grid _screen;
+	public class Game1 : Game
+	{
+		private readonly GameManager _gameManager;
+		private GraphicsDeviceManager _graphics;
+		private SpriteBatch _spriteBatch;
+		private Grid _screen;
 
-        public Game1()
-        {
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+		public Game1()
+		{
+			Content.RootDirectory = "Content";
+			IsMouseVisible = true;
 
-            _gameManager = GameManager.GetInstance();
-            _graphics = new(this);
-            _screen = new();
-        }
+			_gameManager = GameManager.GetInstance();
+			_graphics = new(this);
+			_screen = new();
+		}
 
-        protected override void Initialize()
-        {
-            Window.Title = "Wave Func Collapse App";
+		protected override void Initialize()
+		{
+			Window.Title = "Wave Func Collapse App";
 
-            _screen.Initialize();
+			_screen.Initialize("Lines");
 
-			JsonTemp json = new("json-schema");
-            json.Generate();
+			//JsonTemp json = new("json-schema");
+			//json.Generate();
 
-            base.Initialize();
-        }
+			base.Initialize();
+		}
 
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+		protected override void LoadContent()
+		{
+			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _gameManager.AddService(_spriteBatch);
-            _gameManager.AddService(_spriteBatch.GraphicsDevice);
-            _gameManager.AddService(Content);
-            _gameManager.AddService(_graphics);
-            _gameManager.AddService(Window);
-            _gameManager.AddService(this);
+			_gameManager.AddService(_spriteBatch);
+			_gameManager.AddService(_spriteBatch.GraphicsDevice);
+			_gameManager.AddService(Content);
+			_gameManager.AddService(_graphics);
+			_gameManager.AddService(Window);
+			_gameManager.AddService(this);
 
-            _screen.LoadContent();
-        }
+			_screen.LoadContent();
+		}
 
-        protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+		protected override void Update(GameTime gameTime)
+		{
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+				Exit();
 
-            _screen.Update(gameTime);
+			_screen.Update(gameTime);
 
-            base.Update(gameTime);
-        }
+			base.Update(gameTime);
+		}
 
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.White);
+		protected override void Draw(GameTime gameTime)
+		{
+			GraphicsDevice.Clear(Color.White);
 
-            _screen.Draw(gameTime);
+			_screen.Draw(gameTime);
 
-            base.Draw(gameTime);
-        }
-    }
+			base.Draw(gameTime);
+		}
+	}
 }

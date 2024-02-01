@@ -28,8 +28,9 @@ namespace App.Scripts
 		private ContentManager _content;
 		private GraphicsDeviceManager _graphics;
 
-		private List<Texture2D> _textures = new();
-		private List<Cell> _cells = new();
+		private string _tilesetName;
+		private readonly List<Texture2D> _textures = [];
+		private readonly List<Cell> _cells = [];
 		private TileCollection _tiles;
 
 		private bool _isInitialized = false;
@@ -47,8 +48,11 @@ namespace App.Scripts
 			_gameManager = GameManager.GetInstance();
 		}
 
-		public void Initialize()
+		public void Initialize(string tilesetName)
 		{
+			_tilesetName = tilesetName;
+
+			//TODO: Открытие zip-архива
 			for (int i = 0; i < GRID_SIZE; i++)
 			{
 				for (int j = 0; j < GRID_SIZE; j++)
