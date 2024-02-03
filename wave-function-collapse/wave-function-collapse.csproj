@@ -5,6 +5,7 @@
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -36,7 +37,7 @@
     <Content Include="Sources\*.json" TargetPath="JsonSchemas\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sources\*.zip" TargetPath="TileSets\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Sources\*.zip" TargetPath="Tilesets\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties sources_4lines_4generator-info_1json__JsonSchema="http://raw.githubusercontent.com/ITDarkUFO/gamedev-algorithms/main/wave-function-collapse/Sources/generator-schema.json" /></VisualStudio></ProjectExtensions>
 </Project>

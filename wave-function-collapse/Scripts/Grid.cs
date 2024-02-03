@@ -5,10 +5,21 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace App.Scripts
 {
+	internal class TilesetData
+	{
+		public string Name { get; set; }
+
+		public string Version { get; set; }
+	}
+
 	internal class Grid
 	{
 		#region Constants
@@ -36,6 +47,9 @@ namespace App.Scripts
 		private bool _isInitialized = false;
 		private int _collapsedCells = 0;
 
+		private SpriteFont _font;
+		private TilesetData tilesetData;
+
 		#endregion
 
 		#region Properties
@@ -48,11 +62,25 @@ namespace App.Scripts
 			_gameManager = GameManager.GetInstance();
 		}
 
-		public void Initialize(string tilesetName)
+		public async void Initialize(string tilesetName)
 		{
 			_tilesetName = tilesetName;
 
-			//TODO: Открытие zip-архива
+			if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tilesets", $"{tilesetName}.zip")))
+			{
+				var _fileStream = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tilesets", $"{tilesetName}.zip"), FileMode.Open);
+
+				var _zipArchive = new ZipArchive(_fileStream, ZipArchiveMode.Read);
+
+				using Stream item = _zipArchive.Entries.First(e => e.Name == "tiles-info.json").Open();
+				JsonSerializerOptions serializeOptions = new()
+				{
+					PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+				};
+
+				tilesetData = await JsonSerializer.DeserializeAsync<TilesetData>(item, serializeOptions);
+			}
+
 			for (int i = 0; i < GRID_SIZE; i++)
 			{
 				for (int j = 0; j < GRID_SIZE; j++)
@@ -81,6 +109,8 @@ namespace App.Scripts
 			{
 				cell.CreateCell(false, _tiles.tiles);
 			}
+
+			_font = _content.Load<SpriteFont>("tempFont");
 
 			_graphics.PreferredBackBufferWidth = (TEXTURE_SIZE * GRID_SIZE) + (OFFSET * 2);
 			_graphics.PreferredBackBufferHeight = (TEXTURE_SIZE * GRID_SIZE) + (OFFSET * 2);
@@ -173,6 +203,15 @@ namespace App.Scripts
 						_spriteBatch.End();
 					}
 				}
+			}
+
+			if (tilesetData != null)
+			{
+				_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+				_spriteBatch.DrawString(_font, tilesetData.Name, Vector2.Zero, Color.Red);
+				_spriteBatch.DrawString(_font, tilesetData.Version,
+					new Vector2(0, _font.MeasureString(tilesetData.Name).Y), Color.Red);
+				_spriteBatch.End();
 			}
 		}
 	}

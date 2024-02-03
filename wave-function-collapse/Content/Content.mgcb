@@ -409,3 +409,10 @@
 /processorParam:TextureFormat=Color
 /build:Maze/F.png
 
+#begin tempFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:tempFont.spritefont
+
