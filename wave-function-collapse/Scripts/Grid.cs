@@ -13,18 +13,10 @@ using System.Text.Json.Serialization;
 
 namespace App.Scripts
 {
-	internal class TilesetData
-	{
-		public string Name { get; set; }
-
-		public string Version { get; set; }
-	}
-
 	internal class Grid
 	{
 		#region Constants
 
-		public const int GRID_SIZE = 30;
 		public const int TEXTURE_SIZE = 30;
 		public const int OFFSET = 20;
 		public const string GENERATOR_TYPE = "Maze";
@@ -39,7 +31,6 @@ namespace App.Scripts
 		private ContentManager _content;
 		private GraphicsDeviceManager _graphics;
 
-		private string _tilesetName;
 		private readonly List<Texture2D> _textures = [];
 		private readonly List<Cell> _cells = [];
 		private TileCollection _tiles;
@@ -48,11 +39,21 @@ namespace App.Scripts
 		private int _collapsedCells = 0;
 
 		private SpriteFont _font;
+		private GeneratorData generatorData;
 		private TilesetData tilesetData;
+
+		private readonly JsonSerializerOptions serializerOptions = new()
+		{
+			PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+		};
 
 		#endregion
 
 		#region Properties
+
+		public string TilesetName { get; private set; }
+
+		public Point GridSize;
 
 		#endregion
 
@@ -64,28 +65,42 @@ namespace App.Scripts
 
 		public async void Initialize(string tilesetName)
 		{
-			_tilesetName = tilesetName;
+			TilesetName = tilesetName;
 
 			if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tilesets", $"{tilesetName}.zip")))
 			{
-				var _fileStream = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tilesets", $"{tilesetName}.zip"), FileMode.Open);
+				var archiveStream = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tilesets", $"{tilesetName}.zip"), FileMode.Open);
 
-				var _zipArchive = new ZipArchive(_fileStream, ZipArchiveMode.Read);
+				var archive = new ZipArchive(archiveStream, ZipArchiveMode.Read);
 
-				using Stream item = _zipArchive.Entries.First(e => e.Name == "tiles-info.json").Open();
-				JsonSerializerOptions serializeOptions = new()
-				{
-					PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-				};
+				using Stream generatorJsonStream = archive.Entries.First(e => e.Name == "generator-data.json").Open();
+				generatorData = await JsonSerializer.DeserializeAsync<GeneratorData>(generatorJsonStream, serializerOptions);
+				generatorJsonStream.Close();
 
-				tilesetData = await JsonSerializer.DeserializeAsync<TilesetData>(item, serializeOptions);
+				using Stream tilesetJsonStream = archive.Entries.First(e => e.Name == "tileset-data.json").Open();
+				tilesetData = await JsonSerializer.DeserializeAsync<TilesetData>(tilesetJsonStream, serializerOptions);
+				tilesetJsonStream.Close();
 			}
 
-			for (int i = 0; i < GRID_SIZE; i++)
+			//TODO: Добавить проверку легальности json по схеме
+			//TODO: Вынести json в отдельную папку и переделать копирование при сборке
+
+			if (generatorData.Settings != null)
 			{
-				for (int j = 0; j < GRID_SIZE; j++)
+				//TODO: Поменять под IsFixed и Settins required в json генератора
+				//GridSize = new Point(generatorData.Settings.Dimensions[0][0], generatorData.Settings.Dimensions[0][1]);
+				GridSize = new Point(20, 10);
+			}
+			else
+			{
+				GridSize = new Point(20, 10);
+			}
+
+			for (int y = 0; y < GridSize.Y; y++)
+			{
+				for (int x = 0; x < GridSize.X; x++)
 				{
-					_cells.Add(new(new Point(j, i)));
+					_cells.Add(new(new Point(x, y)));
 				}
 			}
 		}
@@ -112,8 +127,10 @@ namespace App.Scripts
 
 			_font = _content.Load<SpriteFont>("tempFont");
 
-			_graphics.PreferredBackBufferWidth = (TEXTURE_SIZE * GRID_SIZE) + (OFFSET * 2);
-			_graphics.PreferredBackBufferHeight = (TEXTURE_SIZE * GRID_SIZE) + (OFFSET * 2);
+
+
+			_graphics.PreferredBackBufferWidth = (TEXTURE_SIZE * GridSize.X) + (OFFSET * 2);
+			_graphics.PreferredBackBufferHeight = (TEXTURE_SIZE * GridSize.Y) + (OFFSET * 2);
 			_graphics.ApplyChanges();
 		}
 
@@ -125,7 +142,7 @@ namespace App.Scripts
 			{
 				if (!_isInitialized)
 				{
-					cell = _cells[_random.Next(GRID_SIZE * GRID_SIZE)];
+					cell = _cells[_random.Next(GridSize.Y * GridSize.X)];
 
 					cell.Tile = cell.Options[_random.Next(cell.Options.Count)];
 					cell.Collapsed = true;
@@ -146,7 +163,7 @@ namespace App.Scripts
 
 				if (cell.Position.X > 0)
 				{
-					var position = (cell.Position.Y * GRID_SIZE) + cell.Position.X - 1;
+					var position = (cell.Position.Y * GridSize.Y) + cell.Position.X - 1;
 					var newCell = _cells[position];
 					var options = newCell.Options;
 					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).LeftNeighbours;
@@ -154,23 +171,23 @@ namespace App.Scripts
 				}
 				if (cell.Position.Y > 0)
 				{
-					var position = ((cell.Position.Y - 1) * GRID_SIZE) + cell.Position.X;
+					var position = ((cell.Position.Y - 1) * GridSize.Y) + cell.Position.X;
 					var newCell = _cells[position];
 					var options = newCell.Options;
 					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).UpNeighbours;
 					options.RemoveAll(o => !neighbours.Any(n => n.Texture == o.Texture));
 				}
-				if (cell.Position.X < GRID_SIZE - 1)
+				if (cell.Position.X < GridSize.X - 1)
 				{
-					var position = (cell.Position.Y * GRID_SIZE) + cell.Position.X + 1;
+					var position = (cell.Position.Y * GridSize.Y) + cell.Position.X + 1;
 					var newCell = _cells[position];
 					var options = newCell.Options;
 					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).RightNeighbours;
 					options.RemoveAll(o => !neighbours.Any(n => n.Texture == o.Texture));
 				}
-				if (cell.Position.Y < GRID_SIZE - 1)
+				if (cell.Position.Y < GridSize.Y - 1)
 				{
-					var position = ((cell.Position.Y + 1) * GRID_SIZE) + cell.Position.X;
+					var position = ((cell.Position.Y + 1) * GridSize.Y) + cell.Position.X;
 					var newCell = _cells[position];
 					var options = newCell.Options;
 					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).DownNeighbours;
@@ -182,11 +199,11 @@ namespace App.Scripts
 		public void Draw(GameTime gameTime)
 		{
 			Point offset = new(OFFSET);
-			for (var y = 0; y < GRID_SIZE; y++)
+			for (var y = 0; y < GridSize.Y; y++)
 			{
-				for (var x = 0; x < GRID_SIZE; x++)
+				for (var x = 0; x < GridSize.X; x++)
 				{
-					if (_cells[y * GRID_SIZE + x].Tile == null)
+					if (_cells[y * GridSize.Y + x].Tile == null)
 					{
 						_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 						_spriteBatch.Draw(_textures[0], new Rectangle(
@@ -197,7 +214,7 @@ namespace App.Scripts
 					else
 					{
 						_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-						_spriteBatch.Draw(_cells[y * GRID_SIZE + x].Tile.Texture, new Rectangle(
+						_spriteBatch.Draw(_cells[y * GridSize.Y + x].Tile.Texture, new Rectangle(
 							new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset,
 							new Point(TEXTURE_SIZE)), Color.White);
 						_spriteBatch.End();
