@@ -6,7 +6,7 @@ namespace App.Scripts
 {
 	internal class TileCollection
 	{
-		public List<Tile> tiles = new();
+		public List<Tile> tiles = [];
 
 		public TileCollection(List<Texture2D> textures)
 		{
@@ -240,8 +240,8 @@ namespace App.Scripts
 
 			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/F"))
 			{
-				UpNeighbours = new()
-				{
+				UpNeighbours =
+				[
 					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/ABD")),
@@ -251,9 +251,9 @@ namespace App.Scripts
 					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
 
-				},
-				RightNeighbours = new()
-				{
+				],
+				RightNeighbours =
+				[
 					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/ABC")),
@@ -262,9 +262,9 @@ namespace App.Scripts
 					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
-				},
-				DownNeighbours = new()
-				{
+				],
+				DownNeighbours =
+				[
 					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/BCD")),
@@ -273,9 +273,9 @@ namespace App.Scripts
 					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
-				},
-				LeftNeighbours = new()
-				{
+				],
+				LeftNeighbours =
+				[
 					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/AC")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/ACD")),
@@ -284,7 +284,7 @@ namespace App.Scripts
 					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
 					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
-				}
+				]
 			});
 		}
 	}

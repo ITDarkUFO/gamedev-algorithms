@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace App.Scripts
 {
@@ -19,7 +14,7 @@ namespace App.Scripts
 		{
 			public bool IsFixed { get; set; }
 
-			public int[][] Dimensions { get; set; }
+			public List<List<int>> Dimensions { get; set; }
 		}
 	}
 }

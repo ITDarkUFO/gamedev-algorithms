@@ -1,4 +1,5 @@
 ﻿{
     "name": "Lines",
-    "version": "0.0.1"
+    "version": "0.0.1",
+    "settings": { "isFixed": false }
 }

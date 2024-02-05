@@ -17,7 +17,7 @@ namespace App.Scripts
 	{
 		#region Constants
 
-		public const int TEXTURE_SIZE = 30;
+		public const int TEXTURE_SIZE = 20;
 		public const int OFFSET = 20;
 		public const string GENERATOR_TYPE = "Maze";
 
@@ -33,10 +33,8 @@ namespace App.Scripts
 
 		private readonly List<Texture2D> _textures = [];
 		private readonly List<Cell> _cells = [];
+		private readonly List<Cell> _collapsedCells = [];
 		private TileCollection _tiles;
-
-		private bool _isInitialized = false;
-		private int _collapsedCells = 0;
 
 		private SpriteFont _font;
 		private GeneratorData generatorData;
@@ -85,17 +83,16 @@ namespace App.Scripts
 			}
 
 			//TODO: Добавить проверку легальности json по схеме
-			//TODO: Вынести json в отдельную папку и переделать копирование при сборке
 
-			if (generatorData.Settings != null)
+			if (generatorData.Settings.IsFixed)
 			{
-				//TODO: Поменять под IsFixed и Settins required в json генератора
-				//GridSize = new Point(generatorData.Settings.Dimensions[0][0], generatorData.Settings.Dimensions[0][1]);
-				GridSize = new Point(20, 10);
+				//TODO: Выбор размера поля из предложенных вариантов
+				GridSize = new Point(generatorData.Settings.Dimensions[0][0], generatorData.Settings.Dimensions[0][1]);
 			}
 			else
 			{
-				GridSize = new Point(20, 10);
+				//TODO: Выбор размера поля
+				GridSize = new Point(20, 30);
 			}
 
 			for (int y = 0; y < GridSize.Y; y++)
@@ -129,43 +126,45 @@ namespace App.Scripts
 
 			_font = _content.Load<SpriteFont>("tempFont");
 
-
-
 			_graphics.PreferredBackBufferWidth = (TEXTURE_SIZE * GridSize.X) + (OFFSET * 2);
 			_graphics.PreferredBackBufferHeight = (TEXTURE_SIZE * GridSize.Y) + (OFFSET * 2);
 			_graphics.ApplyChanges();
 		}
 
-		public void Update(GameTime gameTime)
+		public void Update(GameTime _)
 		{
 			Cell cell;
 
-			if (_collapsedCells != _cells.Count)
+			if (_collapsedCells.Count != _cells.Count)
 			{
-				if (!_isInitialized)
+				if (_collapsedCells.Count == 0)
 				{
 					cell = _cells[_random.Next(GridSize.Y * GridSize.X)];
 
 					cell.Tile = cell.Options[_random.Next(cell.Options.Count)];
 					cell.Collapsed = true;
-
-					_isInitialized = true;
 				}
 				else
 				{
+					var clearCells = _cells
+						.Where(c => !c.Collapsed)
+						.OrderBy(c => c.Options.Count);
 
-					cell = _cells.Where(c => !c.Collapsed).OrderBy(c => c.Options.Count).First();
+					var smallestCells = clearCells
+						.GroupBy(c => c.Options.Count)
+						.Where(g => g.Key == clearCells.First().Options.Count)
+						.SelectMany(g => g);
+
+					cell = smallestCells.ElementAt(_random.Next(smallestCells.Count()));
 					cell.Tile = cell.Options[_random.Next(cell.Options.Count)];
 					cell.Collapsed = true;
-
 				}
 
-				_collapsedCells += 1;
-
+				_collapsedCells.Add(cell);
 
 				if (cell.Position.X > 0)
 				{
-					var position = (cell.Position.Y * GridSize.Y) + cell.Position.X - 1;
+					var position = (cell.Position.Y * GridSize.X) + cell.Position.X - 1;
 					var newCell = _cells[position];
 					var options = newCell.Options;
 					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).LeftNeighbours;
@@ -173,7 +172,7 @@ namespace App.Scripts
 				}
 				if (cell.Position.Y > 0)
 				{
-					var position = ((cell.Position.Y - 1) * GridSize.Y) + cell.Position.X;
+					var position = ((cell.Position.Y - 1) * GridSize.X) + cell.Position.X;
 					var newCell = _cells[position];
 					var options = newCell.Options;
 					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).UpNeighbours;
@@ -181,7 +180,7 @@ namespace App.Scripts
 				}
 				if (cell.Position.X < GridSize.X - 1)
 				{
-					var position = (cell.Position.Y * GridSize.Y) + cell.Position.X + 1;
+					var position = (cell.Position.Y * GridSize.X) + cell.Position.X + 1;
 					var newCell = _cells[position];
 					var options = newCell.Options;
 					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).RightNeighbours;
@@ -189,7 +188,7 @@ namespace App.Scripts
 				}
 				if (cell.Position.Y < GridSize.Y - 1)
 				{
-					var position = ((cell.Position.Y + 1) * GridSize.Y) + cell.Position.X;
+					var position = ((cell.Position.Y + 1) * GridSize.X) + cell.Position.X;
 					var newCell = _cells[position];
 					var options = newCell.Options;
 					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).DownNeighbours;
@@ -198,14 +197,14 @@ namespace App.Scripts
 			}
 		}
 
-		public void Draw(GameTime gameTime)
+		public void Draw(GameTime _)
 		{
 			Point offset = new(OFFSET);
 			for (var y = 0; y < GridSize.Y; y++)
 			{
 				for (var x = 0; x < GridSize.X; x++)
 				{
-					if (_cells[y * GridSize.Y + x].Tile == null)
+					if (_cells[y * GridSize.X + x].Tile == null)
 					{
 						_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 						_spriteBatch.Draw(_textures[0], new Rectangle(
@@ -216,7 +215,7 @@ namespace App.Scripts
 					else
 					{
 						_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-						_spriteBatch.Draw(_cells[y * GridSize.Y + x].Tile.Texture, new Rectangle(
+						_spriteBatch.Draw(_cells[y * GridSize.X + x].Tile.Texture, new Rectangle(
 							new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset,
 							new Point(TEXTURE_SIZE)), Color.White);
 						_spriteBatch.End();
@@ -227,9 +226,9 @@ namespace App.Scripts
 			if (tilesetData != null)
 			{
 				_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-				_spriteBatch.DrawString(_font, tilesetData.Name, Vector2.Zero, Color.Red);
+				_spriteBatch.DrawString(_font, tilesetData.Name, new Vector2(10), Color.Red);
 				_spriteBatch.DrawString(_font, tilesetData.Version,
-					new Vector2(0, _font.MeasureString(tilesetData.Name).Y), Color.Red);
+					new Vector2(10, 15 + _font.MeasureString(tilesetData.Name).Y), Color.Red);
 				_spriteBatch.End();
 			}
 		}
