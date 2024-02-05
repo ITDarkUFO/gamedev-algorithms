@@ -34,10 +34,9 @@
     <Exec Command="dotnet tool restore" />
   </Target>
   <ItemGroup>
-    <Content Include="Sources\*.json" TargetPath="JsonSchemas\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="JsonSchemas\*.json" TargetPath="JsonSchemas\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sources\*.zip" TargetPath="Tilesets\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Presets\*.zip" TargetPath="Presets\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
-  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>

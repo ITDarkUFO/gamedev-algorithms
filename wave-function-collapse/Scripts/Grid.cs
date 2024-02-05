@@ -67,9 +67,11 @@ namespace App.Scripts
 		{
 			TilesetName = tilesetName;
 
-			if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tilesets", $"{tilesetName}.zip")))
+			var _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Presets", $"{tilesetName}.zip");
+
+			if (File.Exists(_filePath))
 			{
-				var archiveStream = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tilesets", $"{tilesetName}.zip"), FileMode.Open);
+				var archiveStream = new FileStream(_filePath, FileMode.Open);
 
 				var archive = new ZipArchive(archiveStream, ZipArchiveMode.Read);
 
