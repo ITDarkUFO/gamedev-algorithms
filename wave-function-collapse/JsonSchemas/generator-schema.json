@@ -48,7 +48,7 @@
                 }
             },
             "then": {
-                "not": { "required": [ "dimensions" ] },
+                "not": { "required": [ "dimensions" ] }
             },
             "else": {
                 "required": [ "dimensions" ]

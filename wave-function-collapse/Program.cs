@@ -1,3 +1,2 @@
-﻿
-using var game = new App.Game1();
+﻿using var game = new App.WFCExample();
 game.Run();

@@ -8,8 +8,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 
 namespace App.Scripts
 {
@@ -27,6 +25,7 @@ namespace App.Scripts
 
 		private readonly Random _random;
 		private readonly GameManager _gameManager;
+		private readonly JsonSchemaManager _jsonSchemaManager;
 		private SpriteBatch _spriteBatch;
 		private ContentManager _content;
 		private GraphicsDeviceManager _graphics;
@@ -51,7 +50,7 @@ namespace App.Scripts
 
 		public string TilesetName { get; private set; }
 
-		public Point GridSize;
+		public Point GridSize { get; private set; }
 
 		#endregion
 
@@ -59,30 +58,41 @@ namespace App.Scripts
 		{
 			_random = new();
 			_gameManager = GameManager.GetInstance();
+			_jsonSchemaManager = JsonSchemaManager.GetInstance();
 		}
 
 		public async void Initialize(string tilesetName)
 		{
 			TilesetName = tilesetName;
 
-			var _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Presets", $"{tilesetName}.zip");
+			var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Presets", $"{TilesetName}.zip");
 
-			if (File.Exists(_filePath))
+			if (File.Exists(filePath))
 			{
-				var archiveStream = new FileStream(_filePath, FileMode.Open);
+				using var archiveStream = new FileStream(filePath, FileMode.Open);
+				using var archive = new ZipArchive(archiveStream, ZipArchiveMode.Read);
 
-				var archive = new ZipArchive(archiveStream, ZipArchiveMode.Read);
+				using var generatorStream = archive.Entries.First(e => e.Name == "generator-data.json").Open();
 
-				using Stream generatorJsonStream = archive.Entries.First(e => e.Name == "generator-data.json").Open();
-				generatorData = await JsonSerializer.DeserializeAsync<GeneratorData>(generatorJsonStream, serializerOptions);
-				generatorJsonStream.Close();
+				var generatorDocument = await JsonDocument.ParseAsync(generatorStream);
 
-				using Stream tilesetJsonStream = archive.Entries.First(e => e.Name == "tileset-data.json").Open();
-				tilesetData = await JsonSerializer.DeserializeAsync<TilesetData>(tilesetJsonStream, serializerOptions);
-				tilesetJsonStream.Close();
+				if (_jsonSchemaManager.EvaluateData("generator-schema", generatorDocument, out var generatorErrors))
+					generatorData = generatorDocument.Deserialize<GeneratorData>(serializerOptions);
+				else
+					throw new JsonException("В полученных данных найдены ошибки!");
+
+				using var tilesetStream = archive.Entries.First(e => e.Name == "tileset-data.json").Open();
+				var tilesetDocument = await JsonDocument.ParseAsync(tilesetStream);
+
+				if (_jsonSchemaManager.EvaluateData("tileset-schema", tilesetDocument, out var tilesetErrors))
+					tilesetData = tilesetDocument.Deserialize<TilesetData>(serializerOptions);
+				else
+					throw new JsonException("В полученных данных найдены ошибки!");
+
+				//TODO: Предзагрузка тайлов из архива
 			}
-
-			//TODO: Добавить проверку легальности json по схеме
+			else
+				throw new FileNotFoundException("Указанный файл не найден!");
 
 			if (generatorData.Settings.IsFixed)
 			{
@@ -91,7 +101,7 @@ namespace App.Scripts
 			}
 			else
 			{
-				//TODO: Выбор размера поля
+				//TODO: Выбор размера поля пользователем
 				GridSize = new Point(20, 30);
 			}
 
@@ -123,6 +133,8 @@ namespace App.Scripts
 			{
 				cell.CreateCell(false, _tiles.tiles);
 			}
+
+			//TODO: Создание тайлов Texture2d из предзагруженных
 
 			_font = _content.Load<SpriteFont>("tempFont");
 

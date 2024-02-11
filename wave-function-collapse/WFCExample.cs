@@ -6,14 +6,14 @@ using App.Engine;
 
 namespace App
 {
-	public class Game1 : Game
+	public class WFCExample : Game
 	{
 		private readonly GameManager _gameManager;
-		private GraphicsDeviceManager _graphics;
+		private readonly GraphicsDeviceManager _graphics;
 		private SpriteBatch _spriteBatch;
-		private Grid _screen;
+		private readonly Grid _screen;
 
-		public Game1()
+		public WFCExample()
 		{
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
@@ -28,9 +28,6 @@ namespace App
 			Window.Title = "Wave Func Collapse App";
 
 			_screen.Initialize("Lines");
-
-			//JsonTemp json = new("json-schema");
-			//json.Generate();
 
 			base.Initialize();
 		}
@@ -55,16 +52,13 @@ namespace App
 				Exit();
 
 			_screen.Update(gameTime);
-
 			base.Update(gameTime);
 		}
 
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.White);
-
 			_screen.Draw(gameTime);
-
 			base.Draw(gameTime);
 		}
 	}
