@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace App.Scripts
@@ -14,51 +15,51 @@ namespace App.Scripts
 			{
 				UpNeighbours =
 				[
-					//new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "0")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "A")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AB")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "B")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "D")),
+					//new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "F")),
 				],
 				RightNeighbours =
 				[
-					//new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "0")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "A")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AB")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "B")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "C")),
+					//new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "F")),
 				],
 				DownNeighbours =
 				[
-					//new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BCD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "0")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "B")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BCD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "C")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "CD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "D")),
+					//new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "F")),
 				],
 				LeftNeighbours =
 				[
-					//new(textures.FirstOrDefault(t => t.Name == "Maze/0")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ACD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "0")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "A")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ACD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "C")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "CD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "D")),
+					//new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "F")),
 				]
 			};
 
@@ -66,51 +67,51 @@ namespace App.Scripts
 			{
 				UpNeighbours =
 				[
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABCD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ACD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BCD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABCD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ACD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BCD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "C")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "CD")),
 				],
 				RightNeighbours =
 				[
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABCD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ACD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BCD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABCD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ACD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BCD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "CD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "D")),
 				],
 				DownNeighbours =
 				[
-					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABCD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ACD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "A")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AB")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABCD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ACD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AD")),
 				],
 				LeftNeighbours =
 				[
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABCD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BCD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AB")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABCD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "B")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BC")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BCD")),
+					new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BD")),
 				]
 			};
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/0"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "0"))
 			{
 				UpNeighbours = emptyTile.UpNeighbours,
 				RightNeighbours = emptyTile.RightNeighbours,
@@ -118,7 +119,7 @@ namespace App.Scripts
 				LeftNeighbours = emptyTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/A"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "A"))
 			{
 				UpNeighbours = fullTile.UpNeighbours,
 				RightNeighbours = emptyTile.RightNeighbours,
@@ -126,7 +127,7 @@ namespace App.Scripts
 				LeftNeighbours = emptyTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/AB"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AB"))
 			{
 				UpNeighbours = fullTile.UpNeighbours,
 				RightNeighbours = fullTile.RightNeighbours,
@@ -134,7 +135,7 @@ namespace App.Scripts
 				LeftNeighbours = emptyTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/ABC"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABC"))
 			{
 				UpNeighbours = fullTile.UpNeighbours,
 				RightNeighbours = fullTile.RightNeighbours,
@@ -142,7 +143,7 @@ namespace App.Scripts
 				LeftNeighbours = emptyTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/ABCD"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABCD"))
 			{
 				UpNeighbours = fullTile.UpNeighbours,
 				RightNeighbours = fullTile.RightNeighbours,
@@ -150,7 +151,7 @@ namespace App.Scripts
 				LeftNeighbours = fullTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/ABD"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABD"))
 			{
 				UpNeighbours = fullTile.UpNeighbours,
 				RightNeighbours = fullTile.RightNeighbours,
@@ -158,7 +159,7 @@ namespace App.Scripts
 				LeftNeighbours = fullTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/AC"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AC"))
 			{
 				UpNeighbours = fullTile.UpNeighbours,
 				RightNeighbours = emptyTile.RightNeighbours,
@@ -166,7 +167,7 @@ namespace App.Scripts
 				LeftNeighbours = emptyTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/ACD"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ACD"))
 			{
 				UpNeighbours = fullTile.UpNeighbours,
 				RightNeighbours = emptyTile.RightNeighbours,
@@ -174,7 +175,7 @@ namespace App.Scripts
 				LeftNeighbours = fullTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/AD"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AD"))
 			{
 				UpNeighbours = fullTile.UpNeighbours,
 				RightNeighbours = emptyTile.RightNeighbours,
@@ -182,7 +183,7 @@ namespace App.Scripts
 				LeftNeighbours = fullTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/B"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "B"))
 			{
 				UpNeighbours = emptyTile.UpNeighbours,
 				RightNeighbours = fullTile.RightNeighbours,
@@ -190,7 +191,7 @@ namespace App.Scripts
 				LeftNeighbours = emptyTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/BC"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BC"))
 			{
 				UpNeighbours = emptyTile.UpNeighbours,
 				RightNeighbours = fullTile.RightNeighbours,
@@ -198,7 +199,7 @@ namespace App.Scripts
 				LeftNeighbours = emptyTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/BCD"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BCD"))
 			{
 				UpNeighbours = emptyTile.UpNeighbours,
 				RightNeighbours = fullTile.RightNeighbours,
@@ -206,7 +207,7 @@ namespace App.Scripts
 				LeftNeighbours = fullTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/BD"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BD"))
 			{
 				UpNeighbours = emptyTile.UpNeighbours,
 				RightNeighbours = fullTile.RightNeighbours,
@@ -214,7 +215,7 @@ namespace App.Scripts
 				LeftNeighbours = fullTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/C"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "C"))
 			{
 				UpNeighbours = emptyTile.UpNeighbours,
 				RightNeighbours = emptyTile.RightNeighbours,
@@ -222,7 +223,7 @@ namespace App.Scripts
 				LeftNeighbours = emptyTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/CD"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "CD"))
 			{
 				UpNeighbours = emptyTile.UpNeighbours,
 				RightNeighbours = emptyTile.RightNeighbours,
@@ -230,7 +231,7 @@ namespace App.Scripts
 				LeftNeighbours = fullTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/D"))
+			tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "D"))
 			{
 				UpNeighbours = emptyTile.UpNeighbours,
 				RightNeighbours = emptyTile.RightNeighbours,
@@ -238,54 +239,54 @@ namespace App.Scripts
 				LeftNeighbours = fullTile.LeftNeighbours
 			});
 
-			tiles.Add(new(textures.FirstOrDefault(t => t.Name == "Maze/F"))
-			{
-				UpNeighbours =
-				[
-					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
+			//tiles.Add(new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "F"))
+			//{
+			//	UpNeighbours =
+			//	[
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "A")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AB")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABD")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AD")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "B")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BD")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "D")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "F")),
 
-				],
-				RightNeighbours =
-				[
-					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AB")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ABC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
-				],
-				DownNeighbours =
-				[
-					new(textures.FirstOrDefault(t => t.Name == "Maze/B")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BCD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/BD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
-				],
-				LeftNeighbours =
-				[
-					new(textures.FirstOrDefault(t => t.Name == "Maze/A")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AC")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/ACD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/AD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/C")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/CD")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/D")),
-					new(textures.FirstOrDefault(t => t.Name == "Maze/F")),
-				]
-			});
+			//	],
+			//	RightNeighbours =
+			//	[
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "A")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AB")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ABC")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AC")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "B")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BC")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "C")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "F")),
+			//	],
+			//	DownNeighbours =
+			//	[
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "B")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BC")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BCD")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "BD")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "C")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "CD")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "D")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "F")),
+			//	],
+			//	LeftNeighbours =
+			//	[
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "A")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AC")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "ACD")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "AD")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "C")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "CD")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "D")),
+			//		new(textures.FirstOrDefault(t => Path.GetFileNameWithoutExtension(t.Name) == "F")),
+			//	]
+			//});
 		}
 	}
 }

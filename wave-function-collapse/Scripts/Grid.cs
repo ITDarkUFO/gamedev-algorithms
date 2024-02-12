@@ -36,10 +36,13 @@ namespace App.Scripts
 		private TileCollection _tiles;
 
 		private SpriteFont _font;
-		private GeneratorData generatorData;
-		private TilesetData tilesetData;
+		private GeneratorData _generatorData;
+		private TilesetData _tilesetData;
 
-		private readonly JsonSerializerOptions serializerOptions = new()
+		private FileStream _archiveStream;
+		private ZipArchive _archive;
+
+		private readonly JsonSerializerOptions _serializerOptions = new()
 		{
 			PropertyNamingPolicy = JsonNamingPolicy.CamelCase
 		};
@@ -69,35 +72,32 @@ namespace App.Scripts
 
 			if (File.Exists(filePath))
 			{
-				using var archiveStream = new FileStream(filePath, FileMode.Open);
-				using var archive = new ZipArchive(archiveStream, ZipArchiveMode.Read);
+				_archiveStream = new FileStream(filePath, FileMode.Open);
+				_archive = new ZipArchive(_archiveStream, ZipArchiveMode.Read);
 
-				using var generatorStream = archive.Entries.First(e => e.Name == "generator-data.json").Open();
-
-				var generatorDocument = await JsonDocument.ParseAsync(generatorStream);
+				using var generatorStream = _archive.Entries.First(e => e.Name == "generator-data.json").Open();
+				using var generatorDocument = await JsonDocument.ParseAsync(generatorStream);
 
 				if (_jsonSchemaManager.EvaluateData("generator-schema", generatorDocument, out var generatorErrors))
-					generatorData = generatorDocument.Deserialize<GeneratorData>(serializerOptions);
+					_generatorData = generatorDocument.Deserialize<GeneratorData>(_serializerOptions);
 				else
 					throw new JsonException("В полученных данных найдены ошибки!");
 
-				using var tilesetStream = archive.Entries.First(e => e.Name == "tileset-data.json").Open();
-				var tilesetDocument = await JsonDocument.ParseAsync(tilesetStream);
+				using var tilesetStream = _archive.Entries.First(e => e.Name == "tileset-data.json").Open();
+				using var tilesetDocument = await JsonDocument.ParseAsync(tilesetStream);
 
 				if (_jsonSchemaManager.EvaluateData("tileset-schema", tilesetDocument, out var tilesetErrors))
-					tilesetData = tilesetDocument.Deserialize<TilesetData>(serializerOptions);
+					_tilesetData = tilesetDocument.Deserialize<TilesetData>(_serializerOptions);
 				else
 					throw new JsonException("В полученных данных найдены ошибки!");
-
-				//TODO: Предзагрузка тайлов из архива
 			}
 			else
 				throw new FileNotFoundException("Указанный файл не найден!");
 
-			if (generatorData.Settings.IsFixed)
+			if (_generatorData.Settings.IsFixed)
 			{
 				//TODO: Выбор размера поля из предложенных вариантов
-				GridSize = new Point(generatorData.Settings.Dimensions[0][0], generatorData.Settings.Dimensions[0][1]);
+				GridSize = new Point(_generatorData.Settings.Dimensions[0][0], _generatorData.Settings.Dimensions[0][1]);
 			}
 			else
 			{
@@ -120,12 +120,26 @@ namespace App.Scripts
 			_spriteBatch = _gameManager.GetService<SpriteBatch>();
 			_graphics = _gameManager.GetService<GraphicsDeviceManager>();
 
-			foreach (var _fileName in Directory
-				.EnumerateFiles(Path.Combine(_content.RootDirectory, GENERATOR_TYPE))
-				.Select(Path.GetFileNameWithoutExtension))
+			//TODO: Загрузка изображений со всеми поддерживаемыми типами, через foreach
+			var tileEntries = _archive.Entries.Where(e => e.Name.Contains(".png"));
+			tileEntries = tileEntries.Concat(_archive.Entries.Where(e => e.Name.Contains(".jpg")));
+
+			foreach (var tileEntry in tileEntries)
 			{
-				_textures.Add(_content.Load<Texture2D>($"{GENERATOR_TYPE}/{_fileName}"));
+				var image = Texture2D.FromStream(_graphics.GraphicsDevice, tileEntry.Open());
+				image.Name = tileEntry.Name;
+
+				_textures.Add(image);
 			}
+
+			_archive.Dispose();
+
+			//foreach (var _fileName in Directory
+			//	.EnumerateFiles(Path.Combine(_content.RootDirectory, GENERATOR_TYPE))
+			//	.Select(Path.GetFileNameWithoutExtension))
+			//{
+			//	_textures.Add(_content.Load<Texture2D>($"{GENERATOR_TYPE}/{_fileName}"));
+			//}
 
 			_tiles = new(_textures);
 
@@ -235,12 +249,12 @@ namespace App.Scripts
 				}
 			}
 
-			if (tilesetData != null)
+			if (_tilesetData != null)
 			{
 				_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-				_spriteBatch.DrawString(_font, tilesetData.Name, new Vector2(10), Color.Red);
-				_spriteBatch.DrawString(_font, tilesetData.Version,
-					new Vector2(10, 15 + _font.MeasureString(tilesetData.Name).Y), Color.Red);
+				_spriteBatch.DrawString(_font, _tilesetData.Name, new Vector2(10), Color.Red);
+				_spriteBatch.DrawString(_font, _tilesetData.Version,
+					new Vector2(10, 15 + _font.MeasureString(_tilesetData.Name).Y), Color.Red);
 				_spriteBatch.End();
 			}
 		}
