@@ -17,7 +17,6 @@ namespace App.Scripts
 
 		public const int TEXTURE_SIZE = 20;
 		public const int OFFSET = 20;
-		public const string GENERATOR_TYPE = "Maze";
 
 		#endregion
 
@@ -26,14 +25,14 @@ namespace App.Scripts
 		private readonly Random _random;
 		private readonly GameManager _gameManager;
 		private readonly JsonSchemaManager _jsonSchemaManager;
-		private SpriteBatch _spriteBatch;
+
 		private ContentManager _content;
+		private SpriteBatch _spriteBatch;
 		private GraphicsDeviceManager _graphics;
 
 		private readonly List<Texture2D> _textures = [];
 		private readonly List<Cell> _cells = [];
 		private readonly List<Cell> _collapsedCells = [];
-		private TileCollection _tiles;
 
 		private SpriteFont _font;
 		private GeneratorData _generatorData;
@@ -134,21 +133,10 @@ namespace App.Scripts
 
 			_archive.Dispose();
 
-			//foreach (var _fileName in Directory
-			//	.EnumerateFiles(Path.Combine(_content.RootDirectory, GENERATOR_TYPE))
-			//	.Select(Path.GetFileNameWithoutExtension))
-			//{
-			//	_textures.Add(_content.Load<Texture2D>($"{GENERATOR_TYPE}/{_fileName}"));
-			//}
-
-			_tiles = new(_textures);
-
 			foreach (var cell in _cells)
 			{
-				cell.CreateCell(false, _tiles.tiles);
+				cell.CreateCell(false, _tilesetData.Tiles);
 			}
-
-			//TODO: Создание тайлов Texture2d из предзагруженных
 
 			_font = _content.Load<SpriteFont>("tempFont");
 
@@ -163,91 +151,122 @@ namespace App.Scripts
 
 			if (_collapsedCells.Count != _cells.Count)
 			{
-				if (_collapsedCells.Count == 0)
-				{
-					cell = _cells[_random.Next(GridSize.Y * GridSize.X)];
+				//if (_collapsedCells.Count == 0)
+				//{
+				//	cell = _cells[_random.Next(GridSize.Y * GridSize.X)];
 
-					cell.Tile = cell.Options[_random.Next(cell.Options.Count)];
-					cell.Collapsed = true;
-				}
-				else
-				{
-					var clearCells = _cells
-						.Where(c => !c.Collapsed)
-						.OrderBy(c => c.Options.Count);
+				//	cell.Tile = cell.Options[_random.Next(cell.Options.Count)].Tile;
+				//	cell.Texture = _textures.First(t => Path.GetFileNameWithoutExtension(t.Name) == cell.Tile);
+				//	cell.Collapsed = true;
+				//}
+				//else
+				//{
+				var clearCells = _cells
+					.Where(c => !c.Collapsed)
+					.OrderBy(c => c.Options.Count);
 
-					var smallestCells = clearCells
-						.GroupBy(c => c.Options.Count)
-						.Where(g => g.Key == clearCells.First().Options.Count)
-						.SelectMany(g => g);
+				var smallestCells = clearCells
+					.GroupBy(c => c.Options.Count)
+					.Where(g => g.Key == clearCells.First().Options.Count)
+					.SelectMany(g => g);
 
-					cell = smallestCells.ElementAt(_random.Next(smallestCells.Count()));
-					cell.Tile = cell.Options[_random.Next(cell.Options.Count)];
-					cell.Collapsed = true;
-				}
+				cell = smallestCells.ElementAt(_random.Next(smallestCells.Count()));
+				cell.Tile = cell.Options[_random.Next(cell.Options.Count)].Tile;
+				cell.Texture = _textures.First(t => Path.GetFileNameWithoutExtension(t.Name) == cell.Tile);
+				cell.Collapsed = true;
+				//}
 
 				_collapsedCells.Add(cell);
 
 				if (cell.Position.X > 0)
 				{
-					var position = (cell.Position.Y * GridSize.X) + cell.Position.X - 1;
-					var newCell = _cells[position];
-					var options = newCell.Options;
-					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).LeftNeighbours;
-					options.RemoveAll(o => !neighbours.Any(n => n.Texture == o.Texture));
+					var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Left;
+
+					var neighbourPos = (cell.Position.Y * GridSize.X) + cell.Position.X - 1;
+					var neighbourCell = _cells[neighbourPos];
+					var neighbourOptions = neighbourCell.Options;
+					neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
 				}
 				if (cell.Position.Y > 0)
 				{
-					var position = ((cell.Position.Y - 1) * GridSize.X) + cell.Position.X;
-					var newCell = _cells[position];
-					var options = newCell.Options;
-					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).UpNeighbours;
-					options.RemoveAll(o => !neighbours.Any(n => n.Texture == o.Texture));
+					var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Up;
+
+					var neighbourPos = ((cell.Position.Y - 1) * GridSize.X) + cell.Position.X;
+					var neighbourCell = _cells[neighbourPos];
+					var neighbourOptions = neighbourCell.Options;
+					neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
 				}
 				if (cell.Position.X < GridSize.X - 1)
 				{
-					var position = (cell.Position.Y * GridSize.X) + cell.Position.X + 1;
-					var newCell = _cells[position];
-					var options = newCell.Options;
-					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).RightNeighbours;
-					options.RemoveAll(o => !neighbours.Any(n => n.Texture == o.Texture));
+					var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Right;
+
+					var neighbourPos = (cell.Position.Y * GridSize.X) + cell.Position.X + 1;
+					var neighbourCell = _cells[neighbourPos];
+					var neighbourOptions = neighbourCell.Options;
+					neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
 				}
 				if (cell.Position.Y < GridSize.Y - 1)
 				{
-					var position = ((cell.Position.Y + 1) * GridSize.X) + cell.Position.X;
-					var newCell = _cells[position];
-					var options = newCell.Options;
-					var neighbours = _tiles.tiles.FirstOrDefault(t => t.Texture == cell.Tile.Texture).DownNeighbours;
-					options.RemoveAll(o => !neighbours.Any(n => n.Texture == o.Texture));
+					var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Down;
+
+					var neighbourPos = ((cell.Position.Y + 1) * GridSize.X) + cell.Position.X;
+					var neighbourCell = _cells[neighbourPos];
+					var neighbourOptions = neighbourCell.Options;
+					neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
 				}
 			}
 		}
 
 		public void Draw(GameTime _)
 		{
+			int color;
+			Color[] colors = [Color.LightGray, Color.White];
+
 			Point offset = new(OFFSET);
 			for (var y = 0; y < GridSize.Y; y++)
 			{
 				for (var x = 0; x < GridSize.X; x++)
 				{
-					if (_cells[y * GridSize.X + x].Tile == null)
+					color = (y + x) % 2;
+
+					if (_cells[y * GridSize.X + x].Texture == null)
 					{
 						_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 						_spriteBatch.Draw(_textures[0], new Rectangle(
 							new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset,
-							new Point(TEXTURE_SIZE)), Color.White);
+							new Point(TEXTURE_SIZE)), colors[color]);
 						_spriteBatch.End();
 					}
 					else
 					{
 						_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-						_spriteBatch.Draw(_cells[y * GridSize.X + x].Tile.Texture, new Rectangle(
+						_spriteBatch.Draw(_cells[y * GridSize.X + x].Texture, new Rectangle(
 							new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset,
-							new Point(TEXTURE_SIZE)), Color.White);
+							new Point(TEXTURE_SIZE)), colors[color]);
 						_spriteBatch.End();
 					}
 				}
+
 			}
+
+			Texture2D bit = new(_graphics.GraphicsDevice, 1, 1);
+			bit.SetData([Color.DarkGreen]);
+
+			for (var y = 0; y < GridSize.Y + 1; y++)
+			{
+				_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+				_spriteBatch.Draw(bit,
+					new Rectangle(0 + OFFSET, y * TEXTURE_SIZE + OFFSET, TEXTURE_SIZE * GridSize.X, 1), Color.White);
+				_spriteBatch.End();
+			}
+			for (var x = 0; x < GridSize.X + 1; x++)
+			{
+				_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+				_spriteBatch.Draw(bit,
+					new Rectangle(x * TEXTURE_SIZE + OFFSET, 0 + OFFSET, 1, TEXTURE_SIZE * GridSize.Y), Color.White);
+				_spriteBatch.End();
+			}
+
 
 			if (_tilesetData != null)
 			{

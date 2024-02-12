@@ -1,0 +1,150 @@
+﻿{
+    "name": "Maze",
+    "version": "0.0.1",
+    "tiles": [
+        {
+            "tile": "F",
+            "neighbors": {
+                "up": [ "F", "A", "AB", "ABD", "AD", "B", "BD", "D" ],
+                "right": [ "F", "A", "AB", "ABC", "AC", "B", "BC", "C" ],
+                "down": [ "F", "B", "BC", "BCD", "BD", "C", "CD", "D" ],
+                "left": [ "F", "A", "AC", "ACD", "AD", "C", "CD", "D" ]
+            }
+        },
+        {
+            "tile": "A",
+            "neighbors": {
+                "up": [ "ABC", "ABCD", "AC", "ACD", "BC", "BCD", "C", "CD" ],
+                "right": [ "F", "A", "AB", "ABC", "AC", "B", "BC", "C" ],
+                "down": [ "F", "B", "BC", "BCD", "BD", "C", "CD", "D" ],
+                "left": [ "F", "A", "AC", "ACD", "AD", "C", "CD", "D" ]
+            }
+        },
+        {
+            "tile": "AB",
+            "neighbors": {
+                "up": [ "ABC", "ABCD", "AC", "ACD", "BC", "BCD", "C", "CD" ],
+                "right": [ "ABCD", "ABD", "ACD", "AD", "BCD", "BD", "CD", "D" ],
+                "down": [ "F", "B", "BC", "BCD", "BD", "C", "CD", "D" ],
+                "left": [ "F", "A", "AC", "ACD", "AD", "C", "CD", "D" ]
+            }
+        },
+        {
+            "tile": "ABC",
+            "neighbors": {
+                "up": [ "ABC", "ABCD", "AC", "ACD", "BC", "BCD", "C", "CD" ],
+                "right": [ "ABCD", "ABD", "ACD", "AD", "BCD", "BD", "CD", "D" ],
+                "down": [ "A", "AB", "ABC", "ABCD", "ABD", "AC", "ACD", "AD" ],
+                "left": [ "F", "A", "AC", "ACD", "AD", "C", "CD", "D" ]
+            }
+        },
+        {
+            "tile": "ABCD",
+            "neighbors": {
+                "up": [ "ABC", "ABCD", "AC", "ACD", "BC", "BCD", "C", "CD" ],
+                "right": [ "ABCD", "ABD", "ACD", "AD", "BCD", "BD", "CD", "D" ],
+                "down": [ "A", "AB", "ABC", "ABCD", "ABD", "AC", "ACD", "AD" ],
+                "left": [ "AB", "ABC", "ABCD", "ABD", "B", "BC", "BCD", "BD" ]
+            }
+        },
+        {
+            "tile": "ABD",
+            "neighbors": {
+                "up": [ "ABC", "ABCD", "AC", "ACD", "BC", "BCD", "C", "CD" ],
+                "right": [ "ABCD", "ABD", "ACD", "AD", "BCD", "BD", "CD", "D" ],
+                "down": [ "F", "B", "BC", "BCD", "BD", "C", "CD", "D" ],
+                "left": [ "AB", "ABC", "ABCD", "ABD", "B", "BC", "BCD", "BD" ]
+            }
+        },
+        {
+            "tile": "AC",
+            "neighbors": {
+                "up": [ "ABC", "ABCD", "AC", "ACD", "BC", "BCD", "C", "CD" ],
+                "right": [ "F", "A", "AB", "ABC", "AC", "B", "BC", "C" ],
+                "down": [ "A", "AB", "ABC", "ABCD", "ABD", "AC", "ACD", "AD" ],
+                "left": [ "F", "A", "AC", "ACD", "AD", "C", "CD", "D" ]
+            }
+        },
+        {
+            "tile": "ACD",
+            "neighbors": {
+                "up": [ "ABC", "ABCD", "AC", "ACD", "BC", "BCD", "C", "CD" ],
+                "right": [ "F", "A", "AB", "ABC", "AC", "B", "BC", "C" ],
+                "down": [ "A", "AB", "ABC", "ABCD", "ABD", "AC", "ACD", "AD" ],
+                "left": [ "AB", "ABC", "ABCD", "ABD", "B", "BC", "BCD", "BD" ]
+            }
+        },
+        {
+            "tile": "AD",
+            "neighbors": {
+                "up": [ "ABC", "ABCD", "AC", "ACD", "BC", "BCD", "C", "CD" ],
+                "right": [ "F", "A", "AB", "ABC", "AC", "B", "BC", "C" ],
+                "down": [ "F", "B", "BC", "BCD", "BD", "C", "CD", "D" ],
+                "left": [ "AB", "ABC", "ABCD", "ABD", "B", "BC", "BCD", "BD" ]
+            }
+        },
+        {
+            "tile": "B",
+            "neighbors": {
+                "up": [ "F", "A", "AB", "ABD", "AD", "B", "BD", "D" ],
+                "right": [ "ABCD", "ABD", "ACD", "AD", "BCD", "BD", "CD", "D" ],
+                "down": [ "F", "B", "BC", "BCD", "BD", "C", "CD", "D" ],
+                "left": [ "F", "A", "AC", "ACD", "AD", "C", "CD", "D" ]
+            }
+        },
+        {
+            "tile": "BC",
+            "neighbors": {
+                "up": [ "F", "A", "AB", "ABD", "AD", "B", "BD", "D" ],
+                "right": [ "ABCD", "ABD", "ACD", "AD", "BCD", "BD", "CD", "D" ],
+                "down": [ "A", "AB", "ABC", "ABCD", "ABD", "AC", "ACD", "AD" ],
+                "left": [ "F", "A", "AC", "ACD", "AD", "C", "CD", "D" ]
+            }
+        },
+        {
+            "tile": "BCD",
+            "neighbors": {
+                "up": [ "F", "A", "AB", "ABD", "AD", "B", "BD", "D" ],
+                "right": [ "ABCD", "ABD", "ACD", "AD", "BCD", "BD", "CD", "D" ],
+                "down": [ "A", "AB", "ABC", "ABCD", "ABD", "AC", "ACD", "AD" ],
+                "left": [ "AB", "ABC", "ABCD", "ABD", "B", "BC", "BCD", "BD" ]
+            }
+        },
+        {
+            "tile": "BD",
+            "neighbors": {
+                "up": [ "F", "A", "AB", "ABD", "AD", "B", "BD", "D" ],
+                "right": [ "ABCD", "ABD", "ACD", "AD", "BCD", "BD", "CD", "D" ],
+                "down": [ "F", "B", "BC", "BCD", "BD", "C", "CD", "D" ],
+                "left": [ "AB", "ABC", "ABCD", "ABD", "B", "BC", "BCD", "BD" ]
+            }
+        },
+        {
+            "tile": "C",
+            "neighbors": {
+                "up": [ "F", "A", "AB", "ABD", "AD", "B", "BD", "D" ],
+                "right": [ "F", "A", "AB", "ABC", "AC", "B", "BC", "C" ],
+                "down": [ "A", "AB", "ABC", "ABCD", "ABD", "AC", "ACD", "AD" ],
+                "left": [ "F", "A", "AC", "ACD", "AD", "C", "CD", "D" ]
+            }
+        },
+        {
+            "tile": "CD",
+            "neighbors": {
+                "up": [ "F", "A", "AB", "ABD", "AD", "B", "BD", "D" ],
+                "right": [ "F", "A", "AB", "ABC", "AC", "B", "BC", "C" ],
+                "down": [ "A", "AB", "ABC", "ABCD", "ABD", "AC", "ACD", "AD" ],
+                "left": [ "AB", "ABC", "ABCD", "ABD", "B", "BC", "BCD", "BD" ]
+            }
+        },
+        {
+            "tile": "D",
+            "neighbors": {
+                "up": [ "F", "A", "AB", "ABD", "AD", "B", "BD", "D" ],
+                "right": [ "F", "A", "AB", "ABC", "AC", "B", "BC", "C" ],
+                "down": [ "F", "B", "BC", "BCD", "BD", "C", "CD", "D" ],
+                "left": [ "AB", "ABC", "ABCD", "ABD", "B", "BC", "BCD", "BD" ]
+            }
+        }
+    ]
+}
