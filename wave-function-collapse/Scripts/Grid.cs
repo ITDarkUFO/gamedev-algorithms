@@ -15,6 +15,8 @@ namespace App.Scripts
 	{
 		#region Constants
 
+		//TODO: Сделать PropertiesRegistry, где можно зарегистрировать свойства, которые можно менять в настройках
+
 		public const int TEXTURE_SIZE = 20;
 		public const int OFFSET = 20;
 
@@ -151,16 +153,6 @@ namespace App.Scripts
 
 			if (_collapsedCells.Count != _cells.Count)
 			{
-				//if (_collapsedCells.Count == 0)
-				//{
-				//	cell = _cells[_random.Next(GridSize.Y * GridSize.X)];
-
-				//	cell.Tile = cell.Options[_random.Next(cell.Options.Count)].Tile;
-				//	cell.Texture = _textures.First(t => Path.GetFileNameWithoutExtension(t.Name) == cell.Tile);
-				//	cell.Collapsed = true;
-				//}
-				//else
-				//{
 				var clearCells = _cells
 					.Where(c => !c.Collapsed)
 					.OrderBy(c => c.Options.Count);
@@ -174,7 +166,6 @@ namespace App.Scripts
 				cell.Tile = cell.Options[_random.Next(cell.Options.Count)].Tile;
 				cell.Texture = _textures.First(t => Path.GetFileNameWithoutExtension(t.Name) == cell.Tile);
 				cell.Collapsed = true;
-				//}
 
 				_collapsedCells.Add(cell);
 
@@ -219,38 +210,69 @@ namespace App.Scripts
 
 		public void Draw(GameTime _)
 		{
-			int color;
-			Color[] colors = [Color.LightGray, Color.White];
+			DrawBackground([Color.White, Color.LightGray]);
 
 			Point offset = new(OFFSET);
+
 			for (var y = 0; y < GridSize.Y; y++)
 			{
 				for (var x = 0; x < GridSize.X; x++)
 				{
-					color = (y + x) % 2;
-
-					if (_cells[y * GridSize.X + x].Texture == null)
-					{
-						_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-						_spriteBatch.Draw(_textures[0], new Rectangle(
-							new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset,
-							new Point(TEXTURE_SIZE)), colors[color]);
-						_spriteBatch.End();
-					}
-					else
+					if (_cells[y * GridSize.X + x].Texture != null)
 					{
 						_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 						_spriteBatch.Draw(_cells[y * GridSize.X + x].Texture, new Rectangle(
 							new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset,
-							new Point(TEXTURE_SIZE)), colors[color]);
+							new Point(TEXTURE_SIZE)), Color.White);
 						_spriteBatch.End();
 					}
 				}
-
 			}
 
+			DrawLinesGrid(Color.DarkGreen);
+
+			if (_tilesetData != null)
+			{
+				_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+				_spriteBatch.DrawString(_font, _tilesetData.Name, new Vector2(10), Color.Red);
+				_spriteBatch.DrawString(_font, _tilesetData.Version,
+					new Vector2(10, 15 + _font.MeasureString(_tilesetData.Name).Y), Color.Red);
+				_spriteBatch.End();
+			}
+		}
+
+		private void DrawBackground(Color[] colors)
+		{
+			int color;
+			Point offset = new(OFFSET);
+
+			Texture2D texture = new(_graphics.GraphicsDevice, TEXTURE_SIZE, TEXTURE_SIZE);
+
+			Color[] colData = [];
+			for (int i = 0; i < TEXTURE_SIZE * TEXTURE_SIZE; i++)
+				colData = [.. colData, Color.White];
+
+			texture.SetData(colData);
+
+			for (var y = 0; y < GridSize.Y; y++)
+			{
+				for (var x = 0; x < GridSize.X; x++)
+				{
+					color = (y + x) % colors.Length;
+
+					_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+					_spriteBatch.Draw(texture, new Rectangle(
+						new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset,
+						new Point(TEXTURE_SIZE)), colors[color]);
+					_spriteBatch.End();
+				}
+			}
+		}
+
+		private void DrawLinesGrid(Color linesColor)
+		{
 			Texture2D bit = new(_graphics.GraphicsDevice, 1, 1);
-			bit.SetData([Color.DarkGreen]);
+			bit.SetData([linesColor]);
 
 			for (var y = 0; y < GridSize.Y + 1; y++)
 			{
@@ -264,16 +286,6 @@ namespace App.Scripts
 				_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 				_spriteBatch.Draw(bit,
 					new Rectangle(x * TEXTURE_SIZE + OFFSET, 0 + OFFSET, 1, TEXTURE_SIZE * GridSize.Y), Color.White);
-				_spriteBatch.End();
-			}
-
-
-			if (_tilesetData != null)
-			{
-				_spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-				_spriteBatch.DrawString(_font, _tilesetData.Name, new Vector2(10), Color.Red);
-				_spriteBatch.DrawString(_font, _tilesetData.Version,
-					new Vector2(10, 15 + _font.MeasureString(_tilesetData.Name).Y), Color.Red);
 				_spriteBatch.End();
 			}
 		}

@@ -8,9 +8,9 @@ namespace App.Scripts
 	internal class Cell(Point position)
 	{
         public Point Position = position;
-        public List<TileData> Options;
         public string Tile;
         public Texture2D Texture;
+        public List<TileData> Options;
         public bool Collapsed;
 
 		public void CreateCell(bool collapsed, List<TileData> options)
