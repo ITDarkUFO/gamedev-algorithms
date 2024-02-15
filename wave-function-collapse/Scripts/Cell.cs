@@ -18,5 +18,13 @@ namespace App.Scripts
             Collapsed = collapsed;
             Options = new(options);
         }
-    }
+
+        public void RecreateCell(bool collapsed, List<TileData> options)
+        {
+			Collapsed = collapsed;
+			Options = new(options);
+            Tile = null;
+            Texture = null;
+		}
+	}
 }

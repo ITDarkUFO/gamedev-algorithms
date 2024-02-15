@@ -27,7 +27,7 @@ namespace App
 		{
 			Window.Title = "Wave Func Collapse App";
 
-			_screen.Initialize("Lines");
+			_screen.Initialize("Lakes");
 
 			base.Initialize();
 		}

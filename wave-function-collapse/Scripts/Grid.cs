@@ -34,7 +34,7 @@ namespace App.Scripts
 
 		private readonly List<Texture2D> _textures = [];
 		private readonly List<Cell> _cells = [];
-		private readonly List<Cell> _collapsedCells = [];
+		//private readonly List<Cell> _collapsedCells = [];
 
 		private SpriteFont _font;
 		private GeneratorData _generatorData;
@@ -151,59 +151,30 @@ namespace App.Scripts
 		{
 			Cell cell;
 
-			if (_collapsedCells.Count != _cells.Count)
-			{
-				var clearCells = _cells
+			var clearCells = _cells
 					.Where(c => !c.Collapsed)
 					.OrderBy(c => c.Options.Count);
 
+			if (clearCells.Any())
+			{
 				var smallestCells = clearCells
 					.GroupBy(c => c.Options.Count)
 					.Where(g => g.Key == clearCells.First().Options.Count)
 					.SelectMany(g => g);
 
 				cell = smallestCells.ElementAt(_random.Next(smallestCells.Count()));
-				cell.Tile = cell.Options[_random.Next(cell.Options.Count)].Tile;
-				cell.Texture = _textures.First(t => Path.GetFileNameWithoutExtension(t.Name) == cell.Tile);
-				cell.Collapsed = true;
 
-				_collapsedCells.Add(cell);
-
-				if (cell.Position.X > 0)
+				if (cell.Options.Count > 0)
 				{
-					var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Left;
-
-					var neighbourPos = (cell.Position.Y * GridSize.X) + cell.Position.X - 1;
-					var neighbourCell = _cells[neighbourPos];
-					var neighbourOptions = neighbourCell.Options;
-					neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
+					cell.Tile = cell.Options[_random.Next(cell.Options.Count)].Tile;
+					cell.Texture = _textures.First(t => Path.GetFileNameWithoutExtension(t.Name) == cell.Tile);
+					cell.Collapsed = true;
+					ChangeNeighbours(cell);
 				}
-				if (cell.Position.Y > 0)
+				else
 				{
-					var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Up;
-
-					var neighbourPos = ((cell.Position.Y - 1) * GridSize.X) + cell.Position.X;
-					var neighbourCell = _cells[neighbourPos];
-					var neighbourOptions = neighbourCell.Options;
-					neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
-				}
-				if (cell.Position.X < GridSize.X - 1)
-				{
-					var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Right;
-
-					var neighbourPos = (cell.Position.Y * GridSize.X) + cell.Position.X + 1;
-					var neighbourCell = _cells[neighbourPos];
-					var neighbourOptions = neighbourCell.Options;
-					neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
-				}
-				if (cell.Position.Y < GridSize.Y - 1)
-				{
-					var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Down;
-
-					var neighbourPos = ((cell.Position.Y + 1) * GridSize.X) + cell.Position.X;
-					var neighbourCell = _cells[neighbourPos];
-					var neighbourOptions = neighbourCell.Options;
-					neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
+					cell.RecreateCell(false, GetCompatibleTiles(cell));
+					ClearNeighbours(cell);
 				}
 			}
 		}
@@ -229,7 +200,7 @@ namespace App.Scripts
 				}
 			}
 
-			DrawLinesGrid(Color.DarkGreen);
+			//DrawLinesGrid(Color.DarkGreen);
 
 			if (_tilesetData != null)
 			{
@@ -237,8 +208,130 @@ namespace App.Scripts
 				_spriteBatch.DrawString(_font, _tilesetData.Name, new Vector2(10), Color.Red);
 				_spriteBatch.DrawString(_font, _tilesetData.Version,
 					new Vector2(10, 15 + _font.MeasureString(_tilesetData.Name).Y), Color.Red);
+				_spriteBatch.DrawString(_font, $"{100 - (int)(_cells.Where(c => !c.Collapsed).Count() / (double)_cells.Count * 100)}%",
+					new Vector2(10, 20 + _font.MeasureString(_tilesetData.Name).Y + _font.MeasureString(_tilesetData.Version).Y), Color.Red);
 				_spriteBatch.End();
 			}
+		}
+
+		private void ChangeNeighbours(Cell cell)
+		{
+			if (cell.Position.X > 0)
+			{
+				var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Left;
+
+				var neighbourPos = (cell.Position.Y * GridSize.X) + cell.Position.X - 1;
+				var neighbourCell = _cells[neighbourPos];
+				var neighbourOptions = neighbourCell.Options;
+				neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
+			}
+			if (cell.Position.Y > 0)
+			{
+				var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Up;
+
+				var neighbourPos = ((cell.Position.Y - 1) * GridSize.X) + cell.Position.X;
+				var neighbourCell = _cells[neighbourPos];
+				var neighbourOptions = neighbourCell.Options;
+				neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
+			}
+			if (cell.Position.X < GridSize.X - 1)
+			{
+				var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Right;
+
+				var neighbourPos = (cell.Position.Y * GridSize.X) + cell.Position.X + 1;
+				var neighbourCell = _cells[neighbourPos];
+				var neighbourOptions = neighbourCell.Options;
+				neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
+			}
+			if (cell.Position.Y < GridSize.Y - 1)
+			{
+				var neighbours = _tilesetData.Tiles.First(t => t.Tile == cell.Tile).Neighbors.Down;
+
+				var neighbourPos = ((cell.Position.Y + 1) * GridSize.X) + cell.Position.X;
+				var neighbourCell = _cells[neighbourPos];
+				var neighbourOptions = neighbourCell.Options;
+				neighbourOptions.RemoveAll(o => !neighbours.Any(n => n == o.Tile));
+			}
+		}
+
+		private void ClearNeighbours(Cell cell)
+		{
+			if (cell.Position.X > 0)
+			{
+				var neighbourPos = (cell.Position.Y * GridSize.X) + cell.Position.X - 1;
+				var neighbourCell = _cells[neighbourPos];
+				neighbourCell.RecreateCell(false, neighbourCell.Options);
+			}
+			if (cell.Position.Y > 0)
+			{
+				var neighbourPos = ((cell.Position.Y - 1) * GridSize.X) + cell.Position.X;
+				var neighbourCell = _cells[neighbourPos];
+				neighbourCell.RecreateCell(false, neighbourCell.Options);
+			}
+			if (cell.Position.X < GridSize.X - 1)
+			{
+				var neighbourPos = (cell.Position.Y * GridSize.X) + cell.Position.X + 1;
+				var neighbourCell = _cells[neighbourPos];
+				neighbourCell.RecreateCell(false, neighbourCell.Options);
+			}
+			if (cell.Position.Y < GridSize.Y - 1)
+			{
+				var neighbourPos = ((cell.Position.Y + 1) * GridSize.X) + cell.Position.X;
+				var neighbourCell = _cells[neighbourPos];
+				neighbourCell.RecreateCell(false, neighbourCell.Options);
+			}
+		}
+
+		private List<TilesetData.TileData> GetCompatibleTiles(Cell cell)
+		{
+			List<TilesetData.TileData> tileData = _tilesetData.Tiles;
+
+			if (cell.Position.X > 0)
+			{
+				var neighbourPos = (cell.Position.Y * GridSize.X) + cell.Position.X - 1;
+				var neighbourCell = _cells[neighbourPos];
+
+				if (neighbourCell.Collapsed)
+				{
+					var neighbours = _tilesetData.Tiles.First(t => t.Tile == neighbourCell.Tile).Neighbors.Left;
+					tileData = tileData.Intersect(_tilesetData.Tiles.GroupBy(t => neighbours.Contains(t.Tile)).Where(g => g.Key == true).SelectMany(g => g)).ToList();
+				}
+			}
+			if (cell.Position.Y > 0)
+			{
+				var neighbourPos = ((cell.Position.Y - 1) * GridSize.X) + cell.Position.X;
+				var neighbourCell = _cells[neighbourPos];
+
+				if (neighbourCell.Collapsed)
+				{
+					var neighbours = _tilesetData.Tiles.First(t => t.Tile == neighbourCell.Tile).Neighbors.Up;
+					tileData = tileData.Intersect(_tilesetData.Tiles.GroupBy(t => neighbours.Contains(t.Tile)).Where(g => g.Key == true).SelectMany(g => g)).ToList();
+				}
+			}
+			if (cell.Position.X < GridSize.X - 1)
+			{
+				var neighbourPos = (cell.Position.Y * GridSize.X) + cell.Position.X + 1;
+				var neighbourCell = _cells[neighbourPos];
+
+				if (neighbourCell.Collapsed)
+				{
+					var neighbours = _tilesetData.Tiles.First(t => t.Tile == neighbourCell.Tile).Neighbors.Right;
+					tileData = tileData.Intersect(_tilesetData.Tiles.GroupBy(t => neighbours.Contains(t.Tile)).Where(g => g.Key == true).SelectMany(g => g)).ToList();
+				}
+			}
+			if (cell.Position.Y < GridSize.Y - 1)
+			{
+				var neighbourPos = ((cell.Position.Y + 1) * GridSize.X) + cell.Position.X;
+				var neighbourCell = _cells[neighbourPos];
+
+				if (neighbourCell.Collapsed)
+				{
+					var neighbours = _tilesetData.Tiles.First(t => t.Tile == neighbourCell.Tile).Neighbors.Down;
+					tileData = tileData.Intersect(_tilesetData.Tiles.GroupBy(t => neighbours.Contains(t.Tile)).Where(g => g.Key == true).SelectMany(g => g)).ToList();
+				}
+			}
+
+			return tileData;
 		}
 
 		private void DrawBackground(Color[] colors)

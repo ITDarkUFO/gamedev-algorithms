@@ -1,0 +1,114 @@
+﻿{
+    "name": "Lakes",
+    "version": "0.0.1",
+    "tiles": [
+        {
+            "tile": "water",
+            "neighbors": {
+                "up": [ "water", "deepwater", "down" ],
+                "right": [ "water", "deepwater", "left" ],
+                "down": [ "water", "deepwater", "up" ],
+                "left": [ "water", "deepwater", "right" ]
+            }
+        },
+        {
+            "tile": "deepwater",
+            "neighbors": {
+                "up": [ "water", "deepwater" ],
+                "right": [ "water", "deepwater" ],
+                "down": [ "water", "deepwater" ],
+                "left": [ "water", "deepwater" ]
+            }
+        },
+        {
+            "tile": "down",
+            "neighbors": {
+                "up": [ "ground", "up" ],
+                "right": [ "down", "downleft" ],
+                "down": [ "water", "up" ],
+                "left": [ "down", "downright" ]
+            }
+        },
+        {
+            "tile": "downleft",
+            "neighbors": {
+                "up": [ "ground" ],
+                "right": [ "ground" ],
+                "down": [ "left" ],
+                "left": [ "down" ]
+            }
+        },
+        {
+            "tile": "downright",
+            "neighbors": {
+                "up": [ "ground" ],
+                "right": [ "down" ],
+                "down": [ "right" ],
+                "left": [ "ground" ]
+            }
+        },
+        {
+            "tile": "ground",
+            "neighbors": {
+                "up": [ "ground", "mountain", "up", "upleft", "upright" ],
+                "right": [ "ground", "mountain", "right", "downright", "upright" ],
+                "down": [ "ground", "mountain", "down", "downleft", "downright" ],
+                "left": [ "ground", "mountain", "left", "upleft", "downleft" ]
+            }
+        },
+        {
+            "tile": "left",
+            "neighbors": {
+                "up": [ "left", "downleft" ],
+                "right": [ "ground", "right" ],
+                "down": [ "left", "upleft" ],
+                "left": [ "water", "right" ]
+            }
+        },
+        {
+            "tile": "mountain",
+            "neighbors": {
+                "up": [ "ground", "mountain" ],
+                "right": [ "ground", "mountain" ],
+                "down": [ "ground", "mountain" ],
+                "left": [ "ground", "mountain" ]
+            }
+        },
+        {
+            "tile": "right",
+            "neighbors": {
+                "up": [ "right", "downright" ],
+                "right": [ "water", "left" ],
+                "down": [ "right", "upright" ],
+                "left": [ "ground", "left" ]
+            }
+        },
+        {
+            "tile": "up",
+            "neighbors": {
+                "up": [ "water", "down" ],
+                "right": [ "up", "upleft" ],
+                "down": [ "ground", "down" ],
+                "left": [ "up", "upright" ]
+            }
+        },
+        {
+            "tile": "upleft",
+            "neighbors": {
+                "up": [ "left" ],
+                "right": [ "ground" ],
+                "down": [ "ground" ],
+                "left": [ "up" ]
+            }
+        },
+        {
+            "tile": "upright",
+            "neighbors": {
+                "up": [ "right" ],
+                "right": [ "up" ],
+                "down": [ "ground" ],
+                "left": [ "ground" ]
+            }
+        }
+    ]
+}
