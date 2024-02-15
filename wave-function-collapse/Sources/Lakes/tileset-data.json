@@ -109,6 +109,42 @@
                 "down": [ "ground" ],
                 "left": [ "ground" ]
             }
+        },
+        {
+            "tile": "downandleft",
+            "neighbors": {
+                "up": [],
+                "right": [],
+                "down": [],
+                "left": []
+            }
+        },
+        {
+            "tile": "downandright",
+            "neighbors": {
+                "up": [],
+                "right": [],
+                "down": [],
+                "left": []
+            }
+        },
+        {
+            "tile": "upandleft",
+            "neighbors": {
+                "up": [],
+                "right": [],
+                "down": [],
+                "left": []
+            }
+        },
+        {
+            "tile": "upandright",
+            "neighbors": {
+                "up": [],
+                "right": [],
+                "down": [],
+                "left": []
+            }
         }
     ]
 }
