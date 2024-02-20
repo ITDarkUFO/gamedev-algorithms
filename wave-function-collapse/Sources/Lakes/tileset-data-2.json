@@ -1,14 +1,23 @@
 ﻿{
     "name": "Lakes",
-    "version": "0.0.1",
+    "version": "0.0.1-with-mountains-and-deepwater",
     "tiles": [
         {
             "tile": "water",
             "neighbors": {
-                "up": [ "water", "down" ],
-                "right": [ "water", "left" ],
-                "down": [ "water", "up" ],
-                "left": [ "water", "right" ]
+                "up": [ "water", "deepwater", "down" ],
+                "right": [ "water", "deepwater", "left" ],
+                "down": [ "water", "deepwater", "up" ],
+                "left": [ "water", "deepwater", "right" ]
+            }
+        },
+        {
+            "tile": "deepwater",
+            "neighbors": {
+                "up": [ "water", "deepwater" ],
+                "right": [ "water", "deepwater" ],
+                "down": [ "water", "deepwater" ],
+                "left": [ "water", "deepwater" ]
             }
         },
         {
@@ -41,10 +50,10 @@
         {
             "tile": "ground",
             "neighbors": {
-                "up": [ "ground", "up", "upleft", "upright" ],
-                "right": [ "ground", "right", "downright", "upright" ],
-                "down": [ "ground", "down", "downleft", "downright" ],
-                "left": [ "ground", "left", "upleft", "downleft" ]
+                "up": [ "ground", "mountain", "up", "upleft", "upright" ],
+                "right": [ "ground", "mountain", "right", "downright", "upright" ],
+                "down": [ "ground", "mountain", "down", "downleft", "downright" ],
+                "left": [ "ground", "mountain", "left", "upleft", "downleft" ]
             }
         },
         {
@@ -54,6 +63,15 @@
                 "right": [ "ground", "right" ],
                 "down": [ "left", "upleft", "downandleft" ],
                 "left": [ "water", "right" ]
+            }
+        },
+        {
+            "tile": "mountain",
+            "neighbors": {
+                "up": [ "ground", "mountain" ],
+                "right": [ "ground", "mountain" ],
+                "down": [ "ground", "mountain" ],
+                "left": [ "ground", "mountain" ]
             }
         },
         {
