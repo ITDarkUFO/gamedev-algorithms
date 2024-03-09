@@ -5,26 +5,26 @@
         {
             "tile": "water",
             "neighbors": {
-                "up": [ "water", "down" ],
-                "right": [ "water", "left" ],
-                "down": [ "water", "up" ],
-                "left": [ "water", "right" ]
+                "up": [ "water", "down", "downandleft", "downandright" ],
+                "right": [ "water", "left", "downandleft", "upandleft" ],
+                "down": [ "water", "up", "upandleft", "upandright" ],
+                "left": [ "water", "right", "upandright", "downandright" ]
             }
         },
         {
             "tile": "down",
             "neighbors": {
-                "up": [ "ground", "up" ],
+                "up": [ "ground", "up", "upleft", "upright" ],
                 "right": [ "down", "downleft", "downandright" ],
-                "down": [ "water", "up" ],
+                "down": [ "water" ],
                 "left": [ "down", "downright", "downandleft" ]
             }
         },
         {
             "tile": "downleft",
             "neighbors": {
-                "up": [ "ground" ],
-                "right": [ "ground" ],
+                "up": [ "ground", "up", "upleft", "upright" ],
+                "right": [ "ground", "downright", "right", "upright" ],
                 "down": [ "left", "downandleft" ],
                 "left": [ "down", "downandleft" ]
             }
@@ -32,10 +32,10 @@
         {
             "tile": "downright",
             "neighbors": {
-                "up": [ "ground" ],
+                "up": [ "ground", "up", "upright", "upleft" ],
                 "right": [ "down", "downandright" ],
                 "down": [ "right", "downandright" ],
-                "left": [ "ground" ]
+                "left": [ "ground", "left", "downleft", "upleft" ]
             }
         },
         {
@@ -51,26 +51,26 @@
             "tile": "left",
             "neighbors": {
                 "up": [ "left", "downleft", "upandleft" ],
-                "right": [ "ground", "right" ],
+                "right": [ "ground", "right", "downright", "upright" ],
                 "down": [ "left", "upleft", "downandleft" ],
-                "left": [ "water", "right" ]
+                "left": [ "water" ]
             }
         },
         {
             "tile": "right",
             "neighbors": {
                 "up": [ "right", "downright", "upandright" ],
-                "right": [ "water", "left" ],
+                "right": [ "water" ],
                 "down": [ "right", "upright", "downandright" ],
-                "left": [ "ground", "left" ]
+                "left": [ "ground", "left", "downleft", "upleft" ]
             }
         },
         {
             "tile": "up",
             "neighbors": {
-                "up": [ "water", "down" ],
+                "up": [ "water" ],
                 "right": [ "up", "upleft", "upandright" ],
-                "down": [ "ground", "down" ],
+                "down": [ "ground", "down", "downright", "downright" ],
                 "left": [ "up", "upright", "upandleft" ]
             }
         },
@@ -78,8 +78,8 @@
             "tile": "upleft",
             "neighbors": {
                 "up": [ "left", "upandleft" ],
-                "right": [ "ground" ],
-                "down": [ "ground" ],
+                "right": [ "ground", "downright", "right", "upright" ],
+                "down": [ "ground", "down", "downleft", "downright" ],
                 "left": [ "up", "upandleft" ]
             }
         },
@@ -88,15 +88,15 @@
             "neighbors": {
                 "up": [ "right", "upandright" ],
                 "right": [ "up", "upandright" ],
-                "down": [ "ground" ],
-                "left": [ "ground" ]
+                "down": [ "ground", "down", "downleft", "downright" ],
+                "left": [ "ground", "left", "downleft", "upleft" ]
             }
         },
         {
             "tile": "downandleft",
             "neighbors": {
-                "up": [ "left", "downleft" ],
-                "right": [ "down", "downleft" ],
+                "up": [ "left", "downleft", "upandleft" ],
+                "right": [ "down", "downandright", "downleft" ],
                 "down": [ "water" ],
                 "left": [ "water" ]
             }
@@ -104,18 +104,18 @@
         {
             "tile": "downandright",
             "neighbors": {
-                "up": [ "right", "downright" ],
+                "up": [ "right", "downright", "upandright" ],
                 "right": [ "water" ],
                 "down": [ "water" ],
-                "left": [ "down", "downright" ]
+                "left": [ "down", "downright", "downandleft" ]
             }
         },
         {
             "tile": "upandleft",
             "neighbors": {
                 "up": [ "water" ],
-                "right": [ "up", "upleft" ],
-                "down": [ "left", "upleft" ],
+                "right": [ "up", "upleft", "upandright"],
+                "down": [ "left", "upleft", "downandleft" ],
                 "left": [ "water" ]
             }
         },
@@ -124,8 +124,8 @@
             "neighbors": {
                 "up": [ "water" ],
                 "right": [ "water" ],
-                "down": [ "right", "upright" ],
-                "left": [ "up", "upright" ]
+                "down": [ "right", "upright", "downandright" ],
+                "left": [ "up", "upright", "upandleft" ]
             }
         }
     ]
