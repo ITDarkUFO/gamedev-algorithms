@@ -31,7 +31,7 @@ namespace App.Scripts
 				SchemaRegistry.Global.Register(jsonSchema);
 
 				if (!_jsonSchemas.TryAdd(Path.GetFileNameWithoutExtension(file), jsonSchema))
-					throw new Exception("Не удалось добавить json схему в коллекцию.");
+					throw new Exception($"Не удалось добавить json схему {Path.GetFileName(file)} в коллекцию.");
 			}
 		}
 

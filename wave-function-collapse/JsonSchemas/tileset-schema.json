@@ -23,6 +23,11 @@
                         "type": "string",
                         "description": "TODO"
                     },
+                    "weight": {
+                        "type": "number",
+                        "description": "TODO",
+                        "default": 1
+                    },
                     "neighbors": {
                         "type": "object",
                         "description": "TODO",
