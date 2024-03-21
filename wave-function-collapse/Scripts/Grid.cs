@@ -166,7 +166,18 @@ namespace App.Scripts
 
                 if (cell.Options.Count > 0 && cell.CollapsedCount < 10)
                 {
-                    cell.Tile = cell.Options[_random.Next(cell.Options.Count)].Tile;
+                    var totalWeight = cell.Options.Sum(o => o.Weight);
+                    var optionIndex = (float)_random.NextDouble() * totalWeight;
+                    var currentWeight = 0;
+
+                    cell.Options.ForEach(o =>
+                    {
+                        currentWeight += o.Weight;
+
+                        if (currentWeight >= optionIndex)
+                            cell.Tile = o.Tile;
+                    });
+
                     cell.Texture = _textures.First(t => Path.GetFileNameWithoutExtension(t.Name) == cell.Tile);
                     cell.Collapsed = true;
                     ChangeNeighbours(cell);
