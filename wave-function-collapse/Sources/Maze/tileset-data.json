@@ -4,6 +4,7 @@
     "tiles": [
         {
             "tile": "F",
+            "weight": 2,
             "neighbors": {
                 "up": [ "F", "A", "AB", "ABD", "AD", "B", "BD", "D" ],
                 "right": [ "F", "A", "AB", "ABC", "AC", "B", "BC", "C" ],

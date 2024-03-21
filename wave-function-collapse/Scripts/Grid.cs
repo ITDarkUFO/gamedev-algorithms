@@ -54,7 +54,7 @@ namespace App.Scripts
 
         public string TilesetName { get; private set; }
         public Point GridSize { get; private set; }
-        public Point DefaultGridSize = new(50, 40);
+        public Point DefaultGridSize = new(40, 30);
 
         #endregion
 
@@ -155,7 +155,7 @@ namespace App.Scripts
                     .Where(c => !c.Collapsed)
                     .OrderBy(c => c.Options.Count);
 
-            if (clearCells.Any())
+            while (clearCells.Any())
             {
                 var smallestCells = clearCells
                     .GroupBy(c => c.Options.Count)
@@ -166,16 +166,30 @@ namespace App.Scripts
 
                 if (cell.Options.Count > 0 && cell.CollapsedCount < 10)
                 {
+                    cell.Options = [.. cell.Options.OrderBy(o => Guid.NewGuid())];
                     var totalWeight = cell.Options.Sum(o => o.Weight);
-                    var optionIndex = (float)_random.NextDouble() * totalWeight;
-                    var currentWeight = 0;
 
-                    cell.Options.ForEach(o =>
+                    if (totalWeight == 0f)
+                    {
+                        cell.ResetCell(GetCompatibleTiles(cell));
+                        ClearNeighbours(cell);
+                        return;
+                    }
+
+                    var optionIndex = (float)_random.NextDouble() * totalWeight;
+                    var currentWeight = 0f;
+
+                    cell.Options.Find(o =>
                     {
                         currentWeight += o.Weight;
 
                         if (currentWeight >= optionIndex)
+                        {
                             cell.Tile = o.Tile;
+                            return true;
+                        }
+
+                        return false;
                     });
 
                     cell.Texture = _textures.First(t => Path.GetFileNameWithoutExtension(t.Name) == cell.Tile);

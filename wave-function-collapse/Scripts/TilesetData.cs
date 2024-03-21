@@ -14,7 +14,7 @@ namespace App.Scripts
         {
             public string Tile { get; set; }
 
-            public int Weight { get; set; } = 1;
+            public float Weight { get; set; } = 1f;
 
             public NeighborsData Neighbors { get; set; }
 

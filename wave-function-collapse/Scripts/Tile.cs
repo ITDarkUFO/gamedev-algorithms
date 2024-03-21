@@ -3,18 +3,13 @@ using System.Collections.Generic;
 
 namespace App.Scripts
 {
-	internal class Tile
-	{
-		public Texture2D Texture;
+    internal class Tile(Texture2D texture)
+    {
+        public Texture2D Texture = texture;
 
-		public List<Tile> UpNeighbours;
-		public List<Tile> RightNeighbours;
-		public List<Tile> DownNeighbours;
-		public List<Tile> LeftNeighbours;
-
-		public Tile(Texture2D texture)
-		{
-			Texture = texture;
-		}
-	}
+        public List<Tile> UpNeighbours;
+        public List<Tile> RightNeighbours;
+        public List<Tile> DownNeighbours;
+        public List<Tile> LeftNeighbours;
+    }
 }
