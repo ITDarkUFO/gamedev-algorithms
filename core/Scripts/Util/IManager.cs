@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace App.Engine.Util
+namespace Core.Scripts.Util
 {
 	public interface IManager
 	{

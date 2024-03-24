@@ -24,7 +24,7 @@
         },
         {
             "tile": "downleft",
-            "weight": 3,
+            "weight": 0,
             "neighbors": {
                 "up": [ "ground" ],
                 "right": [ "ground" ],
@@ -34,7 +34,7 @@
         },
         {
             "tile": "downright",
-            "weight": 3,
+            "weight": 0,
             "neighbors": {
                 "up": [ "ground" ],
                 "right": [ "down", "downandright", "down_slide_right_water" ],
@@ -46,10 +46,10 @@
             "tile": "ground",
             "weight": 20,
             "neighbors": {
-                "up": [ "ground", "up", "upleft", "up_slide_left_ground", "upright" ],
-                "right": [ "ground", "right", "downright", "down_slide_right_ground", "upright" ],
-                "down": [ "ground", "down", "downleft", "down_slide_left_ground", "downright" ],
-                "left": [ "ground", "left", "upleft", "up_slide_left_ground", "downleft" ]
+                "up": [ "ground", "up", "upleft", "up_slide_left_ground", "upright", "up_slide_right_ground" ],
+                "right": [ "ground", "right", "downright", "down_slide_right_ground", "upright", "up_slide_right_ground" ],
+                "down": [ "ground", "down", "downleft", "down_slide_left_ground", "downright", "down_slide_right_ground" ],
+                "left": [ "ground", "left", "upleft", "up_slide_left_ground", "downleft", "down_slide_left_ground" ]
             }
         },
         {
@@ -84,7 +84,7 @@
         },
         {
             "tile": "upleft",
-            "weight": 3,
+            "weight": 0,
             "neighbors": {
                 "up": [ "left", "upandleft", "up_slide_left_water" ],
                 "right": [ "ground" ],
@@ -94,7 +94,7 @@
         },
         {
             "tile": "upright",
-            "weight": 3,
+            "weight": 0,
             "neighbors": {
                 "up": [ "right", "upandright", "up_slide_right_water" ],
                 "right": [ "up", "upandright", "up_slide_right_water" ],
@@ -104,7 +104,7 @@
         },
         {
             "tile": "downandleft",
-            "weight": 3,
+            "weight": 0,
             "neighbors": {
                 "up": [ "left", "downleft", "down_slide_left_ground", "upandleft", "up_slide_left_water" ],
                 "right": [ "down", "downandright", "downleft", "down_slide_left_ground", "down_slide_right_water" ],
@@ -114,7 +114,7 @@
         },
         {
             "tile": "downandright",
-            "weight": 3,
+            "weight": 0,
             "neighbors": {
                 "up": [ "right", "downright", "down_slide_right_ground", "upandright", "up_slide_right_water" ],
                 "right": [ "water", "left" ],
@@ -124,7 +124,7 @@
         },
         {
             "tile": "upandleft",
-            "weight": 3,
+            "weight": 0,
             "neighbors": {
                 "up": [ "water", "down" ],
                 "right": [ "up", "upleft", "up_slide_left_ground", "upandright", "up_slide_right_water" ],
@@ -134,7 +134,7 @@
         },
         {
             "tile": "upandright",
-            "weight": 3,
+            "weight": 0,
             "neighbors": {
                 "up": [ "water", "down" ],
                 "right": [ "water", "left" ],
@@ -147,7 +147,7 @@
             "weight": 5,
             "neighbors": {
                 "up": [ "left", "downleft", "down_slide_left_ground", "upandleft", "up_slide_left_water" ],
-                "right": [ "down", "downandright", "down_slide_right_water", "downleft" ],
+                "right": [ "down", "downandright", "down_slide_right_water", "downleft", "down_slide_left_ground" ],
                 "down": [ "water", "up" ],
                 "left": [ "water", "right" ]
             }
@@ -182,23 +182,6 @@
                 "left": [ "up", "upright", "up_slide_right_ground", "upandleft", "up_slide_left_water" ]
             }
         },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         {
             "tile": "down_slide_left_ground",
             "weight": 5,

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wave-function-collapse", "wave-function-collapse.csproj", "{6284B12B-8771-42A5-9FA2-8E5F01E5822A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wave-function-collapse", "wave-function-collapse.csproj", "{6284B12B-8771-42A5-9FA2-8E5F01E5822A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "core", "..\core\core.shproj", "{A0CDBD0E-3A41-42B7-9425-A838BC2C7383}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,5 +23,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {862FA404-0C0B-4EF4-9168-3F3447B91CC2}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\core\core.projitems*{6284b12b-8771-42a5-9fa2-8e5f01e5822a}*SharedItemsImports = 5
+		..\core\core.projitems*{a0cdbd0e-3a41-42b7-9425-a838bc2c7383}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

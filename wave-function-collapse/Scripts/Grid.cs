@@ -1,4 +1,4 @@
-﻿using App.Engine;
+﻿using Core.Scripts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,7 +17,7 @@ namespace App.Scripts
 
         //TODO: Сделать PropertiesRegistry, где можно зарегистрировать свойства, которые можно менять в настройках
 
-        public const int TEXTURE_SIZE = 20;
+        public const int TEXTURE_SIZE = 30;
         public const int OFFSET = 20;
 
         #endregion
@@ -227,14 +227,14 @@ namespace App.Scripts
 
                         var count = _cells[y * GridSize.X + x].CollapsedCount.ToString();
 
-                        _spriteBatch.DrawString(_font, count,
-                            (new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset).ToVector2() + new Vector2((TEXTURE_SIZE - _font.MeasureString(count).X) / 2 + 1, 2), Color.Black);
+                        //_spriteBatch.DrawString(_font, count,
+                        //    (new Point(x * TEXTURE_SIZE, y * TEXTURE_SIZE) + offset).ToVector2() + new Vector2((TEXTURE_SIZE - _font.MeasureString(count).X) / 2 + 1, 2), Color.Black);
                         _spriteBatch.End();
                     }
                 }
             }
 
-            DrawLinesGrid(Color.DarkGreen);
+            //DrawLinesGrid(Color.DarkGreen);
 
             if (_tilesetData != null)
             {

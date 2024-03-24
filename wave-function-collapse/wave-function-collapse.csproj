@@ -40,4 +40,5 @@
     <Content Include="Presets\*.zip" TargetPath="Presets\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties sources_4lakes_4tileset-data_1json__JsonSchema="https://raw.githubusercontent.com/ITDarkUFO/gamedev-algorithms/main/wave-function-collapse/JsonSchemas/tileset-schema.json" sources_4maze_4tileset-data_1json__JsonSchema="https://raw.githubusercontent.com/ITDarkUFO/gamedev-algorithms/main/wave-function-collapse/JsonSchemas/tileset-schema.json" /></VisualStudio></ProjectExtensions>
+  <Import Project="..\core\core.projitems" Label="Shared" />
 </Project>
