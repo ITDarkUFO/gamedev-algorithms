@@ -1,4 +1,5 @@
 ﻿using Core.Scripts;
+using Core.Scripts.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,7 +12,7 @@ using System.Text.Json;
 
 namespace App.Scripts
 {
-    internal class Grid
+    internal class Grid : Core.Scripts.Util.IUpdateable
     {
         #region Constants
 
@@ -34,7 +35,6 @@ namespace App.Scripts
 
         private readonly List<Texture2D> _textures = [];
         private readonly List<Cell> _cells = [];
-        //private readonly List<Cell> _collapsedCells = [];
 
         private SpriteFont _font;
         private GeneratorData _generatorData;
@@ -53,8 +53,17 @@ namespace App.Scripts
         #region Properties
 
         public string TilesetName { get; private set; }
+
         public Point GridSize { get; private set; }
+
         public Point DefaultGridSize = new(40, 30);
+
+        public bool Enabled => throw new NotImplementedException();
+
+        public int UpdateOrder => throw new NotImplementedException();
+
+        public event EventHandler<EventArgs> EnabledChanged;
+        public event EventHandler<EventArgs> UpdateOrderChanged;
 
         #endregion
 

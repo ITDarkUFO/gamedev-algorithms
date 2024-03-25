@@ -1,5 +1,4 @@
-﻿using Core.Scripts.Util;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 
 namespace Core.Scripts
@@ -7,7 +6,7 @@ namespace Core.Scripts
     /// <summary>
     /// Менеджер, управляющий игровыми сервисами.
     /// </summary>
-    public class GameManager : GameServiceContainer, Util.IUpdateable
+    public class GameManager : GameServiceContainer
     {
         #region Fields
 
@@ -59,20 +58,16 @@ namespace Core.Scripts
         /// <param name="provider">Экземпляр сервиса</param>
         public new void AddService<T>(T provider)
         {
+            AddService(typeof(T), provider);
+
             //if (provider is Game game)
             //{
             //    base.AddService(game);
             //    ServiceAdded?.Invoke(this, EventArgs.Empty);
             //}
 
-            base.AddService(provider);
-            ServiceAdded?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <inheritdoc/>
-        public void Update(GameTime gameTime)
-        {
-            throw new NotImplementedException();
+            //base.AddService(provider);
+            //ServiceAdded?.Invoke(this, EventArgs.Empty);
         }
     }
 }

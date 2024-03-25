@@ -36,7 +36,7 @@ namespace Core.Scripts
             return _instance;
         }
 
-        public void Generate(string schemaName)
+        public void GenerateSample(string schemaName)
         {
             if (_jsonSchemas.TryGetValue(schemaName, out var jsonSchema))
             {
