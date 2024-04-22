@@ -1,5 +1,4 @@
 ﻿using Core.Scripts;
-using Core.Scripts.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,13 +11,13 @@ using System.Text.Json;
 
 namespace App.Scripts
 {
-    internal class Grid : Core.Scripts.Util.IUpdateable
+    internal class Grid : Core.Scripts.IUpdateable
     {
         #region Constants
 
         //TODO: Сделать PropertiesRegistry, где можно зарегистрировать свойства, которые можно менять в настройках
 
-        public const int TEXTURE_SIZE = 30;
+        public const int TEXTURE_SIZE = 10;
         public const int OFFSET = 20;
 
         #endregion
