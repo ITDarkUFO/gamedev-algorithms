@@ -4,15 +4,10 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.Marshalling;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace App.Scripts
 {
-    internal class Generator : Core.Scripts.IUpdateable, Core.Scripts.IDrawable, Microsoft.Xna.Framework.IGameComponent
+    internal class Generator : Core.Scripts.IUpdateable, Core.Scripts.IDrawable, IGameComponent
     {
         #region Fields
 
@@ -65,14 +60,19 @@ namespace App.Scripts
         public void Initialize()
         {
             _graphics = _gameManager.GetService<GraphicsDeviceManager>();
-            _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            _graphics.IsFullScreen = true;
+            //_graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            //_graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferHeight = 600;
+            //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
-            _textureWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _textureHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            _generatorStep = _textureWidth * _textureHeight / 100;
+            //_textureWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            //_textureHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            //_generatorStep = _textureWidth * _textureHeight / 100;
+
+            _textureWidth = 800;
+            _textureHeight = 600;
 
             for (int y = 0; y < _textureHeight; y++)
             {
@@ -95,29 +95,29 @@ namespace App.Scripts
 
         public void Update(GameTime gameTime)
         {
-            if (current < _textureWidth * _textureHeight)
-            {
-                for (int i = current; i < Math.Min(current + _generatorStep, _textureWidth * _textureHeight); i++)
-                {
-                    var color = _random.Next(255);
-                    _colorData[i] = new Color(color, color, color);
-                }
+            //current = 0;
 
-                current += _generatorStep;
-            }
-            else
+            //while (current < _textureWidth * _textureHeight)
+            //{
+            for (int i = current; i < _textureWidth * _textureHeight; i++)
             {
-                _texture.SetData(_colorData.ToArray());
+                var color = _random.Next(255);
+                _colorData[i] = new Color(color, color, color);
             }
+
+            //    current = _textureWidth * _textureHeight;
+            //}
+
+            _texture.SetData(_colorData.ToArray());
         }
 
         public void Draw(GameTime gameTime)
         {
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            _spriteBatch.Begin();
 
             _spriteBatch.Draw(_texture, new Rectangle(0, 0, _textureWidth, _textureHeight), Color.White);
-            _spriteBatch.DrawString(_font, $"{current * 100 / (_textureWidth * _textureHeight)}%",
-                new Vector2(15, 10), Color.Red);
+            _spriteBatch.DrawString(_font, $"{gameTime.ElapsedGameTime.TotalMilliseconds}",
+                new Vector2(15, 10), Color.Blue);
 
             _spriteBatch.End();
         }
